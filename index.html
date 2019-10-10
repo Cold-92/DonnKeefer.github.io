@@ -196,7 +196,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog01.html">
+    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/bolg01.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="DonnKeefer">
@@ -210,7 +210,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
             
-            <a href="/blog01.html" class="post-title-link" itemprop="url">规范化理论</a>
+            <a href="/bolg01.html" class="post-title-link" itemprop="url">Hexo</a>
           
         </h1>
 
@@ -236,7 +236,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-10 00:40:47" itemprop="dateModified" datetime="2019-10-10T00:40:47+08:00">2019-10-10</time>
+                <time title="修改时间：2019-10-10 10:55:26" itemprop="dateModified" datetime="2019-10-10T10:55:26+08:00">2019-10-10</time>
               </span>
             
           
@@ -252,93 +252,89 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>一.函数依赖部分</p>
-<pre><code>1.函数依赖
-    写法：X--&gt;Y
-    叫法：函数Y依赖于X（X叫做决定因子）
-    本质：已知X是否可知道Y，且X与Y之间是一一对应的关系
-    特性：
-        如果X--&gt;Y,且Y--&gt;X,则可记为 X&lt;--&gt;Y
+          <p>！<a href="http://image.baidu.com/search/detail?ct=503316480&z=0&ipn=d&word=%E5%9B%BE%E7%89%87&hs=0&pn=0&spn=0&di=38610&pi=0&rn=1&tn=baiduimagedetail&is=0%2C0&ie=utf-8&oe=utf-8&cl=2&lm=-1&cs=3357786243%2C3135716437&os=4195954864%2C278166371&simid=3380796606%2C170546444&adpicid=0&lpn=0&ln=30&fr=ala&fm=&sme=&cg=&bdtype=0&oriquery=&objurl=http%3A%2F%2Fpic16.nipic.com%2F20111006%2F6239936_092702973000_2.jpg&fromurl=ippr_z2C%24qAzdH3FAzdH3Fooo_z%26e3Bgtrtv_z%26e3Bv54AzdH3Ffi5oAzdH3F9AzdH3F8n0AzdH3Fc80mnadhn0nbmmal_z%26e3Bip4s&gsm=&islist=&querylist=" target="_blank" rel="noopener"></a></p>
 
-2.平凡函数依赖
-    定义：已知X--&gt;Y，且X包含Y
-    含义：自己一条或多条数据唯一确定本身的一条或者多条数据，很少使用
-    例子：（职工号，姓名）--&gt;职工号
+        
+      
+    </div>
 
-3.非平凡函数依赖
-    定义：已知X--&gt;Y，且X不包含Y
-    含义：自己的一条或者多条数据唯一确定另外一条数据，频繁使用
-    例子：职工号--&gt;职工姓名
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
 
-4.完全函数依赖
-    写法：X-（f）-&gt;Y
-    定义：已知X--&gt;Y, 不存在X的真子集Z，使得Z--&gt;Y成立，称函数Y完全依赖于X
-    含义：函数Y完全依靠于X，X中缺一不可
-    性质：由含义可知，如果X中只有一个决定因子，则一定是完全函数依赖，因为X没有真子集
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/bolg02.html">
 
-5.部分函数依赖
-    写法：X-（p）-&gt;Y
-    定义：已知X--&gt;Y, 存在X的真子集Z，使得Z--&gt;Y成立，称函数Y部分依赖于X
-    含义：函数Y不仅仅可以依靠X还可以依靠X的子集
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DonnKeefer">
+      <meta itemprop="description" content="This is a test Website">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
 
-6.传递函数依赖
-    写法：X-（传递）-&gt;Y
-    定义：已知X--&gt;Y，且Z是X的真子集
-          X--&gt;Y，Y--&gt;Z, 则称函数Z传递依赖于X</code></pre><p>二.关系三范式</p>
-<pre><code>关系模式是否合理的评价标准：范式（规范的关系模式）
-约束性：BCNF&gt;3NF&gt;2NF&gt;1NF
-所属性：BCNF∈3NF∈2NF∈1NF
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DonnKeefer">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/bolg02.html" class="post-title-link" itemprop="url">Hexo2</a>
+          
+        </h1>
 
-范式讨论的都是规范的关系模式，（1NF+2NF+3NF+BCNF都属于规范关系模式）
-对于不规范的关系模式，要将其转换成规范的关系模式再讨论
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
 
+              
+                
+              
 
-1NF：
-    （1）对于关系模式R，其中每个属性都是不可再分的（原子属性），则称R属于第一范式（ R∈1NF）
-        比如说：工资=基本工资+绩效，工资就是可再分的
+              <time title="创建时间：2019-10-09 20:42:17" itemprop="dateCreated datePublished" datetime="2019-10-09T20:42:17+08:00">2019-10-09</time>
+            </span>
+          
+            
 
-    （2）1NF是关系模式应具备的最基本的条件，但可能存在大量数据冗余，插入异常等弊端
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-10 11:06:15" itemprop="dateModified" datetime="2019-10-10T11:06:15+08:00">2019-10-10</time>
+              </span>
+            
+          
 
-2NF:
-    （1）对于关系模式R，其中每个非主属性都完全依赖于R的主码，则称R属于第二范式（ R∈2NF）
-        （若干个主属性）-（f）-&gt;（非主属性）
-        比如说已知关系模式 R（教师，课程）
-        已知每个老师可以教多门课，每门课也可以由不同的老师来交
-        所以R的主码是（教师，课程），教师和课程都为主属性，不存在非主属性
-        所以 R∈2NF
+          
 
-    （2）从1NF中消除非主属性对主属性的部分函数依赖就可以得到2NF关系
+        </div>
+      </header>
 
-    （3）如果R的主码为单属性，则R∈2NF（每一个非主属性对单属性的主码都是完全函数依赖，因为单属性  
-        没有真子集）
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
-    （4）如果R的主码为全体属性，则R∈2NF（全都是主属性，没有非主属性）
+      
+          <p>11111111111111111</p>
 
-3NF：
-    （1）已知关系模式R∈2NF，且每个非主属性都不传递依赖于R的主码，则称R属于第三范式（R∈3NF）
-        比如说：R（SNO,SN,AGE,DEPT,MN）
-                 其中: SNO --&gt; DEPT, DEPT--&gt;MN
-                     则 SNO-(传递)-&gt;MN
-            非主属性MN传递依赖于主码SNO，所以R!∈3NF
-
-    （2）因为关系模式属于第三范式的情况下同时属于第二范式，所以关系模式中每一个非主属性都完全依赖
-        于主属性（每一个非主属性都不部分依赖于主属性）
-
-BCNF：
-    任何属性之间（非主属性与主属性，非主属性与非主属性，主属性与主属性）都没有任何一个部分函数依赖和传递函数依赖。
-
-
-总结：
-    已知 1NF∈2NF∈3NF∈BCNF范围逐渐缩小，所限定的条件越来越多，使得关系模式越来越规范
-    看每一个范式的条件就能找到规律
-    1NF：每一个属性都不可再分
-    2NF：关系模式中每个非主属性与主属性之间存在完全函数依赖
-    3NF：关系模式中每个非主属性与主属性之间存在完全函数依赖+不存在传递函数依赖
-    4NF：任何两个属性之间都存在完全函数依赖+不存在传递函数依赖
-
-注意:
-    如果两个属性之间存在完全函数依赖，意味着一定不存在部分函数依赖
-    完全函数依赖与部分函数依赖时对立的</code></pre>
         
       
     </div>
@@ -391,11 +387,19 @@ BCNF：
                 
               
 
-              <time title="创建时间：2019-10-08 17:14:28 / 修改时间：20:33:03" itemprop="dateCreated datePublished" datetime="2019-10-08T17:14:28+08:00">2019-10-08</time>
+              <time title="创建时间：2019-10-08 17:14:28" itemprop="dateCreated datePublished" datetime="2019-10-08T17:14:28+08:00">2019-10-08</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-10-10 10:14:39" itemprop="dateModified" datetime="2019-10-10T10:14:39+08:00">2019-10-10</time>
+              </span>
             
           
 
@@ -411,7 +415,7 @@ BCNF：
 
       
           <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Hello-hexo"><a href="#Hello-hexo" class="headerlink" title="Hello hexo"></a>Hello hexo</h2><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
 
 <p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
 <h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
@@ -489,7 +493,7 @@ BCNF：
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
