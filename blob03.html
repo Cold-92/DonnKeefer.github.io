@@ -58,19 +58,19 @@
   };
 </script>
 
-  <meta name="description" content="Joint application of Exception, IO and recursion in Java SE">
-<meta name="keywords" content="io&#x2F;Exception&#x2F;recursion">
+  <meta name="description" content="Joint application of HashMap，HashSet in Java SE">
+<meta name="keywords" content="HashMap&#x2F;HashSet">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Joint application of Exception, IO and recursion in Java SE">
-<meta property="og:url" content="https://DonnKeefer.github.io/blog01.html">
+<meta property="og:title" content="Joint application of HashMap，HashSet in Java SE">
+<meta property="og:url" content="https://DonnKeefer.github.io/blob03.html">
 <meta property="og:site_name" content="DonnKeefer">
-<meta property="og:description" content="Joint application of Exception, IO and recursion in Java SE">
+<meta property="og:description" content="Joint application of HashMap，HashSet in Java SE">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-02T13:51:58.607Z">
+<meta property="og:updated_time" content="2019-11-04T07:47:37.809Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Joint application of Exception, IO and recursion in Java SE">
-<meta name="twitter:description" content="Joint application of Exception, IO and recursion in Java SE">
-  <link rel="canonical" href="https://DonnKeefer.github.io/blog01">
+<meta name="twitter:title" content="Joint application of HashMap，HashSet in Java SE">
+<meta name="twitter:description" content="Joint application of HashMap，HashSet in Java SE">
+  <link rel="canonical" href="https://DonnKeefer.github.io/blob03">
 
 
 <script id="page-configurations">
@@ -84,7 +84,7 @@
   };
 </script>
 
-  <title>Joint application of Exception, IO and recursion in Java SE | DonnKeefer</title>
+  <title>Joint application of HashMap，HashSet in Java SE | DonnKeefer</title>
   
 
 
@@ -256,7 +256,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog01.html">
+    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blob03.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="DonnKeefer">
@@ -268,7 +268,7 @@
       <meta itemprop="name" content="DonnKeefer">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">Joint application of Exception, IO and recursion in Java SE
+        <h1 class="post-title" itemprop="name headline">Joint application of HashMap，HashSet in Java SE
 
           
         </h1>
@@ -284,19 +284,11 @@
                 
               
 
-              <time title="创建时间：2019-11-01 20:42:17" itemprop="dateCreated datePublished" datetime="2019-11-01T20:42:17+08:00">2019-11-01</time>
+              <time title="创建时间：2019-11-04 15:37:17 / 修改时间：15:47:37" itemprop="dateCreated datePublished" datetime="2019-11-04T15:37:17+08:00">2019-11-04</time>
             </span>
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-02 21:51:58" itemprop="dateModified" datetime="2019-11-02T21:51:58+08:00">2019-11-02</time>
-              </span>
             
           
 
@@ -319,7 +311,7 @@
       
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/blog01.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blog01.html" itemprop="commentCount"></span></a>
+    <a title="valine" href="/blob03.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blob03.html" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -331,7 +323,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>1.4k</span>
+              <span>2.7k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -341,7 +333,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
           
 
@@ -354,93 +346,170 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Joint application of Exception, IO and recursion in Java SE</p>
+        <p>Joint application of HashMap，HashSet in Java SE</p>
 <a id="more"></a>
-<h3 id="查找一个目录下所有子路径和子文件："><a href="#查找一个目录下所有子路径和子文件：" class="headerlink" title="查找一个目录下所有子路径和子文件："></a>查找一个目录下所有子路径和子文件：</h3><pre><code>import java.io.*;
+<h2 id="利用HashMap做一个小型购物车系统"><a href="#利用HashMap做一个小型购物车系统" class="headerlink" title="利用HashMap做一个小型购物车系统"></a>利用HashMap做一个小型购物车系统</h2><h3 id="Product-java"><a href="#Product-java" class="headerlink" title="Product.java"></a>Product.java</h3><pre><code>public class Product {
 
-public class SeekFiles {
+    private int no;
+    private String name;
+    private double price;
 
-    public static void main(String[] args) {
+    public Product() {}
 
-        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
-        SeekFiles.seekFiles(file);
-
+    public Product(int no, String name, double price) {
+        this.no = no;
+        this.name = name;
+        this.price = price;
     }
 
-    public static void seekFiles(File file) {
+    public int getNo() {
+        return no;
+    }
 
-        if(file.isFile()) {
+    public void setNo(int no) {
+        this.no = no;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String toString() {
+        return &quot; [商品编号]:&quot;+this.no+&quot; [商品名称]:&quot;+this.name+&quot; [商品价格]:&quot;+this.price;
+    }
+
+    //如果商品名称和商品编号一样就是同一个商品
+    public boolean equals(Object o){
+        if(this == o) {
+            return true;
+        }
+        if(o instanceof Product) {
+            Product tmp = (Product)o;
+            if(tmp.no == this.no &amp;&amp; tmp.name.equals(this.name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //货物编号的格式（1000-9999）
+    public int hashCode() {
+        return this.no/1000;
+    }
+
+}</code></pre><h3 id="ShoppingCart-java"><a href="#ShoppingCart-java" class="headerlink" title="ShoppingCart.java"></a>ShoppingCart.java</h3><pre><code>import java.util.*;
+
+public class ShoppingCart {
+
+    double totalPrice;
+    Map&lt;Product, Integer&gt; productMaps;
+
+    public ShoppingCart() {
+        this.totalPrice = 0.0;
+        productMaps = new HashMap&lt;Product, Integer&gt;();
+    }
+
+    //增加一个商品进入购物车
+    void add(Product p) {
+        add(p,1);
+    }
+    //增加多个商品进入购物车
+    void add(Product p, int n) {
+        //判断购物车中是否有该类商品
+        if(productMaps.containsKey(p)) {
+            productMaps.put(p, productMaps.get(p)+n);//自动装箱
+        }else {
+            productMaps.put(p, n);
+        }
+
+        this.totalPrice = this.totalPrice + (n*p.getPrice());
+    }
+
+    //删除
+    void remove(Product p) {
+        remove(p, 1);
+    }
+    void remove(Product p, int n) {
+        //判断这类商品是否存在
+        if(productMaps.containsKey(p)) {
+            //判断要删除的这个商品是不是只有1个
+            if(productMaps.get(p) == 1) {
+                productMaps.remove(p);
+            }else {
+                productMaps.put(p, productMaps.get(p)-n);
+            }
+        }else {
+            System.out.println(&quot;无该类型商品&quot;);
             return ;
         }
 
-        File[] files = file.listFiles();
-        for(File subFile : files) {
-            System.out.println(subFile.getAbsolutePath());
-            seekFiles(subFile);
-        }
-
+        this.totalPrice = this.totalPrice - (n*p.getPrice());
     }
 
-}</code></pre><h3 id="批量复制文件："><a href="#批量复制文件：" class="headerlink" title="批量复制文件："></a>批量复制文件：</h3><pre><code>import java.io.*;
+    //清空购物车
+    void clear() {
+        productMaps.clear();
+        this.totalPrice = 0.0;
+    }
 
-public class CopyFiles {
+    //打印账单
+    /*
+     * 格式：
+     *         购物账单：
+     *         10         苹果      10元
+     *         12         香蕉      20元
+     *         ....    
+     */
+    void print() {
+        Set&lt;Product&gt; keys = productMaps.keySet();
+        Iterator&lt;Product&gt; it = keys.iterator();
+        StringBuffer bf = new StringBuffer();
+
+        bf.append(&quot;购物账单：\n&quot;);
+        bf.append(&quot;         货物数量                                            商品信息                                                  应付价格\n&quot;);
+
+        while(it.hasNext()) {
+            Product product = it.next();
+            Integer number = productMaps.get(product);
+            bf.append(&quot;\t&quot;+number.intValue()+&quot;\t&quot;+product+&quot;\t&quot;+(number*product.getPrice())+&quot;\n&quot;);
+        }
+
+        bf.append(&quot;\t\t\t\t\t\t\t总价是：&quot;+this.totalPrice+&quot;元&quot;);
+        System.out.println(bf);
+    }
+
+}</code></pre><h3 id="Test-java"><a href="#Test-java" class="headerlink" title="Test.java"></a>Test.java</h3><pre><code>public class Test {
 
     public static void main(String[] args) {
 
-        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
-        CopyFiles.copyFile(file);
+        ShoppingCart shop = new ShoppingCart();
 
-    }
+        Product p1 = new Product(101, &quot;苹果&quot;, 2.0);
+        Product p2 = new Product(102, &quot;香蕉&quot;, 3.0);
+        Product p3 = new Product(103, &quot;西瓜&quot;, 4.0);
+        Product p4 = new Product(104, &quot;荔枝&quot;, 5.0);
+        Product p5 = new Product(105, &quot;芒果&quot;, 6.0);
 
-    public static void copyFile(File file) {
+        shop.add(p1, 2);
+        shop.add(p2, 3);
+        shop.add(p3, 4);
+        shop.add(p4, 5);
+        shop.add(p5, 6);
 
-        if(file.isFile()) {//判断是否为文件，不是就是路径
-            String filePath = file.getAbsolutePath();
-            String newFilePath = &quot;C&quot;+filePath.substring(1);
-            File parentFile = new File(newFilePath).getParentFile();
-            if(!parentFile.exists()) {//判断父路径是否存在
-                parentFile.mkdirs();
-            }
-
-            FileInputStream fis = null;
-            FileOutputStream fos = null;
-
-            try {
-                fis = new FileInputStream(filePath);
-                fos = new FileOutputStream(newFilePath);
-
-                byte[] bytes = new byte[1024000];//每次拷贝100kb
-                int temp = 0;
-                while((temp=fis.read(bytes)) != -1){
-                    fos.write(bytes, 0, temp);
-                }
-
-                fos.flush();
-            }catch (Exception e) {
-                e.printStackTrace();
-            }finally {
-                if(fis != null) {
-                    try {
-                        fis.close();
-                    }catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(fos != null) {
-                    try {
-                        fos.close();
-                    }catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            return ;
-        }
-
-        File[] files = file.listFiles();
-        for(File subFile : files) {
-            copyFile(subFile);
-        }
+        shop.print();
+        System.out.println();
 
     }
 
@@ -482,7 +551,7 @@ public class CopyFiles {
           
           <div class="post-tags">
             
-              <a href="/tags/io-Exception-recursion/" rel="tag"># io/Exception/recursion</a>
+              <a href="/tags/HashMap-HashSet/" rel="tag"># HashMap/HashSet</a>
             
           </div>
         
@@ -492,8 +561,8 @@ public class CopyFiles {
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/blog02.html" rel="next" title="Joint application of Exception, Multithreading in Java SE">
-                  <i class="fa fa-chevron-left"></i> Joint application of Exception, Multithreading in Java SE
+                <a href="/blog01.html" rel="next" title="Joint application of Exception, IO and recursion in Java SE">
+                  <i class="fa fa-chevron-left"></i> Joint application of Exception, IO and recursion in Java SE
                 </a>
               
             </div>
@@ -501,10 +570,6 @@ public class CopyFiles {
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/blob03.html" rel="prev" title="Joint application of HashMap，HashSet in Java SE">
-                  Joint application of HashMap，HashSet in Java SE <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -556,7 +621,7 @@ public class CopyFiles {
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#查找一个目录下所有子路径和子文件："><span class="nav-number">1.</span> <span class="nav-text">查找一个目录下所有子路径和子文件：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#批量复制文件："><span class="nav-number">2.</span> <span class="nav-text">批量复制文件：</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#利用HashMap做一个小型购物车系统"><span class="nav-number">1.</span> <span class="nav-text">利用HashMap做一个小型购物车系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Product-java"><span class="nav-number">1.1.</span> <span class="nav-text">Product.java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ShoppingCart-java"><span class="nav-number">1.2.</span> <span class="nav-text">ShoppingCart.java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-java"><span class="nav-number">1.3.</span> <span class="nav-text">Test.java</span></a></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->

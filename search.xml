@@ -1,6 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Joint application of HashMap，HashSet in Java SE</title>
+    <url>/blob03.html</url>
+    <content><![CDATA[<p>Joint application of HashMap，HashSet in Java SE</p>
+<a id="more"></a>
+<h2 id="利用HashMap做一个小型购物车系统"><a href="#利用HashMap做一个小型购物车系统" class="headerlink" title="利用HashMap做一个小型购物车系统"></a>利用HashMap做一个小型购物车系统</h2><h3 id="Product-java"><a href="#Product-java" class="headerlink" title="Product.java"></a>Product.java</h3><pre><code>public class Product {
+
+    private int no;
+    private String name;
+    private double price;
+
+    public Product() {}
+
+    public Product(int no, String name, double price) {
+        this.no = no;
+        this.name = name;
+        this.price = price;
+    }
+
+    public int getNo() {
+        return no;
+    }
+
+    public void setNo(int no) {
+        this.no = no;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String toString() {
+        return &quot; [商品编号]:&quot;+this.no+&quot; [商品名称]:&quot;+this.name+&quot; [商品价格]:&quot;+this.price;
+    }
+
+    //如果商品名称和商品编号一样就是同一个商品
+    public boolean equals(Object o){
+        if(this == o) {
+            return true;
+        }
+        if(o instanceof Product) {
+            Product tmp = (Product)o;
+            if(tmp.no == this.no &amp;&amp; tmp.name.equals(this.name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //货物编号的格式（1000-9999）
+    public int hashCode() {
+        return this.no/1000;
+    }
+
+}</code></pre><h3 id="ShoppingCart-java"><a href="#ShoppingCart-java" class="headerlink" title="ShoppingCart.java"></a>ShoppingCart.java</h3><pre><code>import java.util.*;
+
+public class ShoppingCart {
+
+    double totalPrice;
+    Map&lt;Product, Integer&gt; productMaps;
+
+    public ShoppingCart() {
+        this.totalPrice = 0.0;
+        productMaps = new HashMap&lt;Product, Integer&gt;();
+    }
+
+    //增加一个商品进入购物车
+    void add(Product p) {
+        add(p,1);
+    }
+    //增加多个商品进入购物车
+    void add(Product p, int n) {
+        //判断购物车中是否有该类商品
+        if(productMaps.containsKey(p)) {
+            productMaps.put(p, productMaps.get(p)+n);//自动装箱
+        }else {
+            productMaps.put(p, n);
+        }
+
+        this.totalPrice = this.totalPrice + (n*p.getPrice());
+    }
+
+    //删除
+    void remove(Product p) {
+        remove(p, 1);
+    }
+    void remove(Product p, int n) {
+        //判断这类商品是否存在
+        if(productMaps.containsKey(p)) {
+            //判断要删除的这个商品是不是只有1个
+            if(productMaps.get(p) == 1) {
+                productMaps.remove(p);
+            }else {
+                productMaps.put(p, productMaps.get(p)-n);
+            }
+        }else {
+            System.out.println(&quot;无该类型商品&quot;);
+            return ;
+        }
+
+        this.totalPrice = this.totalPrice - (n*p.getPrice());
+    }
+
+    //清空购物车
+    void clear() {
+        productMaps.clear();
+        this.totalPrice = 0.0;
+    }
+
+    //打印账单
+    /*
+     * 格式：
+     *         购物账单：
+     *         10         苹果      10元
+     *         12         香蕉      20元
+     *         ....    
+     */
+    void print() {
+        Set&lt;Product&gt; keys = productMaps.keySet();
+        Iterator&lt;Product&gt; it = keys.iterator();
+        StringBuffer bf = new StringBuffer();
+
+        bf.append(&quot;购物账单：\n&quot;);
+        bf.append(&quot;         货物数量                                            商品信息                                                  应付价格\n&quot;);
+
+        while(it.hasNext()) {
+            Product product = it.next();
+            Integer number = productMaps.get(product);
+            bf.append(&quot;\t&quot;+number.intValue()+&quot;\t&quot;+product+&quot;\t&quot;+(number*product.getPrice())+&quot;\n&quot;);
+        }
+
+        bf.append(&quot;\t\t\t\t\t\t\t总价是：&quot;+this.totalPrice+&quot;元&quot;);
+        System.out.println(bf);
+    }
+
+}</code></pre><h3 id="Test-java"><a href="#Test-java" class="headerlink" title="Test.java"></a>Test.java</h3><pre><code>public class Test {
+
+    public static void main(String[] args) {
+
+        ShoppingCart shop = new ShoppingCart();
+
+        Product p1 = new Product(101, &quot;苹果&quot;, 2.0);
+        Product p2 = new Product(102, &quot;香蕉&quot;, 3.0);
+        Product p3 = new Product(103, &quot;西瓜&quot;, 4.0);
+        Product p4 = new Product(104, &quot;荔枝&quot;, 5.0);
+        Product p5 = new Product(105, &quot;芒果&quot;, 6.0);
+
+        shop.add(p1, 2);
+        shop.add(p2, 3);
+        shop.add(p3, 4);
+        shop.add(p4, 5);
+        shop.add(p5, 6);
+
+        shop.print();
+        System.out.println();
+
+    }
+
+}</code></pre>]]></content>
+      <tags>
+        <tag>HashMap/HashSet</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Joint application of Exception, IO and recursion in Java SE</title>
     <url>/blog01.html</url>
     <content><![CDATA[<p>Joint application of Exception, IO and recursion in Java SE</p>
