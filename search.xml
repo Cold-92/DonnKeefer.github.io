@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title></title>
+    <url>/blog05.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>Joint application of HashMap，HashSet in Java SE</title>
     <url>/blob03.html</url>
     <content><![CDATA[<p>Joint application of HashMap，HashSet in Java SE</p>
@@ -274,6 +279,281 @@ public class CopyFiles {
       </tags>
   </entry>
   <entry>
+    <title>JDBC process structure in Java SE</title>
+    <url>/blog04.html</url>
+    <content><![CDATA[<p>JDBC process structure in Java SE</p>
+<a id="more"></a>
+
+<h3 id="JDBC基本流程六步骤（静态注册）"><a href="#JDBC基本流程六步骤（静态注册）" class="headerlink" title="JDBC基本流程六步骤（静态注册）"></a>JDBC基本流程六步骤（静态注册）</h3><pre><code>import java.sql.*;
+import com.mysql.jdbc.Driver;
+
+public class JDBCTest01 {
+
+    public static void main(String[] args) {
+
+        Connection conn = null;
+        Statement stmt = null;
+
+        try {
+
+            //①获取和注册驱动
+            Driver driver = new com.mysql.jdbc.Driver();
+            DriverManager.registerDriver(driver);
+            //利用反射机制类加载Driver运行静态代码块注册驱动
+            //使用反射机制还需要多处理一个ClassNotFoundException
+//            Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+//            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+
+            //②建立连接
+            String url = &quot;jdbc:mysql://127.0.0.1:3306/bjpowernode&quot;;
+            String user = &quot;root&quot;;
+            String password = &quot;13013005866&quot;;
+            conn = DriverManager.getConnection(url, user, password);
+//            conn = DriverManager.getConnection(&quot;&quot;, &quot;&quot;, &quot;&quot;);
+
+            //③建立sql操作对象
+            stmt = conn.createStatement();
+
+            //④执行sql语句
+            //不写分号
+            String sql = &quot;insert into dept (deptno, dname, loc) values (50, &apos;人事部&apos;, &apos;北京&apos;)&quot;;
+            int count = stmt.executeUpdate(sql);
+            System.out.println(count == 1 ? &quot;插入数据成功&quot; : &quot;插入数据失败&quot;);
+
+            //⑤不是select语句，不能经行数据处理，后也如此
+
+        }catch(SQLException e) {
+
+            e.printStackTrace();
+
+        }finally {
+
+            //⑥从小到大释放资源
+            try {
+                if(conn != null) {
+                    conn.close();
+                }
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if(stmt != null) {
+                    stmt.close();
+                }
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+}</code></pre><h3 id="动态注册（IO-Properties）"><a href="#动态注册（IO-Properties）" class="headerlink" title="动态注册（IO+Properties）"></a>动态注册（IO+Properties）</h3><pre><code>import java.sql.*;
+import java.io.*;
+import java.util.*;
+
+public class JDBCTest02 {
+
+    public static void main(String[] args) throws Exception{//涉及到IO上抛一个异常
+
+        Connection conn = null;
+        Statement stmt = null;
+
+        //IO+Properties
+        Properties p = new Properties();
+        FileInputStream fis = new FileInputStream(&quot;D:\\JAVA Code Base\\Java Exercises\\src\\jdbc\\jdbc.properties&quot;);
+        p.load(fis);
+
+        //配置文件获取
+        String driver = p.getProperty(&quot;driver&quot;);
+        String url = p.getProperty(&quot;url&quot;);
+        String user = p.getProperty(&quot;user&quot;);
+        String password = p.getProperty(&quot;password&quot;);
+
+        try {
+
+            Class.forName(driver);
+
+            conn = DriverManager.getConnection(url, user, password);
+
+            stmt = conn.createStatement();
+
+            String sql = &quot;update dept set dname = &apos;销售部&apos;, loc = &apos;天津&apos; where  deptno = 20&quot;;
+            int count = stmt.executeUpdate(sql);
+            System.out.println(count == 1 ? &quot;数据修改成功&quot; : &quot;数据修改失败&quot;);
+
+        }catch (Exception e) {
+
+            e.printStackTrace();
+
+        }finally {
+
+            try {
+                if(conn != null) {
+                    conn.close();
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if(stmt != null) {
+                    stmt.close();
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+}</code></pre><h3 id="动态注册（ResourceBundle）"><a href="#动态注册（ResourceBundle）" class="headerlink" title="动态注册（ResourceBundle）"></a>动态注册（ResourceBundle）</h3><pre><code>import java.sql.*;
+import java.util.*;
+
+public class JDBCTest03 {
+
+    public static void main(String[] args) {
+
+        Connection conn = null;
+        Statement stmt = null;
+
+        //ResourceBundle
+        ResourceBundle bundle = ResourceBundle.getBundle(&quot;D:\\JAVA Code Base\\Java Exercises\\src\\jdbc\\jdbc.properties&quot;);
+
+        配置文件获取
+        String driver = bundle.getString(&quot;driver&quot;);
+        String url = bundle.getString(&quot;url&quot;);
+        String user = bundle.getString(&quot;user&quot;);
+        String password = bundle.getString(&quot;password&quot;);
+
+        try {
+
+            Class.forName(driver);
+
+            conn = DriverManager.getConnection(url, user, password);
+
+            stmt = conn.createStatement();
+
+            String sql = &quot;update dept set dname = &apos;销售部&apos;, loc = &apos;天津&apos; where  deptno = 20&quot;;
+            int count = stmt.executeUpdate(sql);
+            System.out.println(count == 1 ? &quot;数据修改成功&quot; : &quot;数据修改失败&quot;);
+
+        }catch(Exception e) {
+
+            e.printStackTrace();
+
+        }finally {
+
+            try {
+                if(conn != null) {
+                    conn.close();
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if(stmt != null) {
+                    stmt.close();
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+}</code></pre><h3 id="处理查询结果集（IO-Properties）"><a href="#处理查询结果集（IO-Properties）" class="headerlink" title="处理查询结果集（IO+Properties）"></a>处理查询结果集（IO+Properties）</h3><pre><code>import java.sql.*;
+import java.util.*;
+import java.io.*;
+
+public class JDBCTest04 {
+
+    public static void main(String[] args) throws Exception{
+
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        Properties p = new Properties();
+        FileInputStream fis = new FileInputStream(&quot;D:\\JAVA Code Base\\Java Exercises\\src\\jdbc\\jdbc.properties&quot;);
+        p.load(fis);
+
+        String driver = p.getProperty(&quot;driver&quot;);
+        String url = p.getProperty(&quot;url&quot;);
+        String user = p.getProperty(&quot;user&quot;);
+        String password = p.getProperty(&quot;password&quot;);
+
+//        ResourceBundle bundle = ResourceBundle.getBundle(&quot;D:\\JAVA Code Base\\Java Exercises\\src\\jdbc\\jdbc.properties&quot;);    
+//        String driver = bundle.getString(&quot;driver&quot;);
+//        String url = bundle.getString(&quot;url&quot;);
+//        String user = bundle.getString(&quot;user&quot;);
+//        String password = bundle.getString(&quot;password&quot;);
+
+        try {
+
+            Class.forName(driver);
+
+            conn = DriverManager.getConnection(url, user, password);
+
+            stmt = conn.createStatement();
+
+            String sql = &quot;select ename, sal from emp&quot;;
+
+            //创建查询结果集对象，对查询结果进行操作
+            rs = stmt.executeQuery(sql);
+            while(rs.next()) {
+                String ename = rs.getString(&quot;ename&quot;);
+                String sal = rs.getString(&quot;sal&quot;);
+                System.out.println(&quot;ename:&quot; + ename + &quot;,&quot; + &quot;sal:&quot; + sal);
+            }
+
+        }catch (Exception e) {
+
+            e.printStackTrace();
+
+        }finally {
+
+            if(conn != null) {
+                try {
+                    conn.close();
+                }catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(stmt != null) {
+                try {
+                    stmt.close();
+                }catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(rs != null) {
+                try {
+                    rs.close();
+                }catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+    }
+
+}</code></pre><h3 id="jdbc-properties"><a href="#jdbc-properties" class="headerlink" title="jdbc.properties"></a>jdbc.properties</h3><pre><code>driver=com.mysql.jdbc.Driver
+url=jdbc:mysql://localhost:3306/bjpowernode
+user=root
+password=13013005866</code></pre>]]></content>
+      <tags>
+        <tag>Reflaction/JDBC</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Application of Exception, Multithreading in Java SE</title>
     <url>/blog02.html</url>
     <content><![CDATA[<p>Application of Exception, Multithreading in Java SE</p>
@@ -359,202 +639,6 @@ public class CopyFiles {
 }</code></pre>]]></content>
       <tags>
         <tag>Exception/Thread</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JDBC process structure in Java SE</title>
-    <url>/blog04.html</url>
-    <content><![CDATA[<p>JDBC process structure in Java SE</p>
-<a id="more"></a>
-
-<h3 id="JDBC基本流程六步骤（静态注册）"><a href="#JDBC基本流程六步骤（静态注册）" class="headerlink" title="JDBC基本流程六步骤（静态注册）"></a>JDBC基本流程六步骤（静态注册）</h3><pre><code>import java.sql.*;
-import com.mysql.jdbc.Driver;
-
-public class JDBCTest01 {
-
-    public static void main(String[] args) {
-
-        Connection conn = null;
-        Statement stmt = null;
-
-        try {
-
-            //①获取和注册驱动
-            Driver driver = new com.mysql.jdbc.Driver();
-            DriverManager.registerDriver(driver);
-            //利用反射机制类加载Driver运行静态代码块注册驱动
-            //使用反射机制还需要多处理一个ClassNotFoundException
-//            Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
-//            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-
-            //②建立连接
-            String url = &quot;jdbc:mysql://127.0.0.1:3306/bjpowernode&quot;;
-            String user = &quot;root&quot;;
-            String password = &quot;13013005866&quot;;
-            conn = DriverManager.getConnection(url, user, password);
-//            conn = DriverManager.getConnection(&quot;&quot;, &quot;&quot;, &quot;&quot;);
-
-            //③建立sql操作对象
-            stmt = conn.createStatement();
-
-            //④执行sql语句
-            //不写分号
-            String sql = &quot;insert into dept (deptno, dname, loc) values (50, &apos;人事部&apos;, &apos;北京&apos;)&quot;;
-            int count = stmt.executeUpdate(sql);
-            System.out.println(count == 1 ? &quot;插入数据成功&quot; : &quot;插入数据失败&quot;);
-
-            //⑤不是select语句，不能经行数据处理，后也如此
-
-        } catch(SQLException e) {
-
-            e.printStackTrace();
-
-        } finally {
-
-            //⑥从小到大释放资源
-            try {
-                if(conn != null) {
-                    conn.close();
-                }
-            }catch(Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if(stmt != null) {
-                    stmt.close();
-                }
-            }catch(Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    }
-
-}</code></pre><h3 id="动态注册（IO-Properties）"><a href="#动态注册（IO-Properties）" class="headerlink" title="动态注册（IO+Properties）"></a>动态注册（IO+Properties）</h3><pre><code>import java.sql.*;
-import java.io.*;
-import java.util.*;
-
-public class JDBCTest02 {
-
-    public static void main(String[] args) throws Exception{//涉及到IO上抛一个异常
-
-        Connection conn = null;
-        Statement stmt = null;
-
-        //IO+Properties
-        Properties p = new Properties();
-        FileInputStream fis = new FileInputStream(&quot;D:\\JAVA Code Base\\Java Exercises\\src\\jdbc\\jdbc.properties&quot;);
-        p.load(fis);
-
-        //配置文件获取
-        String driver = p.getProperty(&quot;driver&quot;);
-        String url = p.getProperty(&quot;url&quot;);
-        String user = p.getProperty(&quot;user&quot;);
-        String password = p.getProperty(&quot;password&quot;);
-
-        try {
-
-            Class.forName(driver);
-
-            conn = DriverManager.getConnection(url, user, password);
-
-            stmt = conn.createStatement();
-
-            String sql = &quot;update dept set dname = &apos;销售部&apos;, loc = &apos;天津&apos; where  deptno = 20&quot;;
-            int count = stmt.executeUpdate(sql);
-            System.out.println(count == 1 ? &quot;数据修改成功&quot; : &quot;数据修改失败&quot;);
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        } finally {
-
-            try {
-                if(conn != null) {
-                    conn.close();
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if(stmt != null) {
-                    stmt.close();
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    }
-
-}</code></pre><h3 id="动态注册（ResourceBundle）"><a href="#动态注册（ResourceBundle）" class="headerlink" title="动态注册（ResourceBundle）"></a>动态注册（ResourceBundle）</h3><pre><code>import java.sql.*;
-import java.util.*;
-
-public class JDBCTest03 {
-
-    public static void main(String[] args) {
-
-        Connection conn = null;
-        Statement stmt = null;
-
-        //ResourceBundle
-        ResourceBundle bundle = ResourceBundle.getBundle(&quot;D:\\JAVA Code Base\\Java Exercises\\src\\jdbc\\jdbc.properties&quot;);
-
-        配置文件获取
-        String driver = bundle.getString(&quot;driver&quot;);
-        String url = bundle.getString(&quot;url&quot;);
-        String user = bundle.getString(&quot;user&quot;);
-        String password = bundle.getString(&quot;password&quot;);
-
-        try {
-
-            Class.forName(driver);
-
-            conn = DriverManager.getConnection(url, user, password);
-
-            stmt = conn.createStatement();
-
-            String sql = &quot;update dept set dname = &apos;销售部&apos;, loc = &apos;天津&apos; where  deptno = 20&quot;;
-            int count = stmt.executeUpdate(sql);
-            System.out.println(count == 1 ? &quot;数据修改成功&quot; : &quot;数据修改失败&quot;);
-
-        } catch(Exception e) {
-
-            e.printStackTrace();
-
-        } finally {
-
-            try {
-                if(conn != null) {
-                    conn.close();
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if(stmt != null) {
-                    stmt.close();
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    }
-
-}</code></pre><h3 id="jdbc-properties"><a href="#jdbc-properties" class="headerlink" title="jdbc.properties"></a>jdbc.properties</h3><pre><code>driver=com.mysql.jdbc.Driver
-url=jdbc:mysql://localhost:3306/bjpowernode
-user=root
-password=13013005866</code></pre>]]></content>
-      <tags>
-        <tag>Reflaction/JDBC</tag>
       </tags>
   </entry>
 </search>
