@@ -66,7 +66,7 @@
 <meta property="og:site_name" content="DonnKeefer">
 <meta property="og:description" content="JDBC process structure in Java SE">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-07T13:28:50.346Z">
+<meta property="og:updated_time" content="2019-11-07T13:52:31.505Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JDBC process structure in Java SE">
 <meta name="twitter:description" content="JDBC process structure in Java SE">
@@ -295,7 +295,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-07 21:28:50" itemprop="dateModified" datetime="2019-11-07T21:28:50+08:00">2019-11-07</time>
+                <time title="修改时间：2019-11-07 21:52:31" itemprop="dateModified" datetime="2019-11-07T21:52:31+08:00">2019-11-07</time>
               </span>
             
           
@@ -403,16 +403,16 @@ public class JDBCTest01 {
 
             //⑥从小到大释放资源
             try {
-                if(conn != null) {
-                    conn.close();
+                if(stmt != null) {
+                    stmt.close();
                 }
             }catch(Exception e) {
                 e.printStackTrace();
             }
 
             try {
-                if(stmt != null) {
-                    stmt.close();
+                if(conn != null) {
+                    conn.close();
                 }
             }catch(Exception e) {
                 e.printStackTrace();
@@ -463,16 +463,16 @@ public class JDBCTest02 {
         }finally {
 
             try {
-                if(conn != null) {
-                    conn.close();
+                if(stmt != null) {
+                    stmt.close();
                 }
             } catch(Exception e) {
                 e.printStackTrace();
             }
 
             try {
-                if(stmt != null) {
-                    stmt.close();
+                if(conn != null) {
+                    conn.close();
                 }
             } catch(Exception e) {
                 e.printStackTrace();
@@ -520,16 +520,16 @@ public class JDBCTest03 {
         }finally {
 
             try {
-                if(conn != null) {
-                    conn.close();
+                if(stmt != null) {
+                    stmt.close();
                 }
             } catch(Exception e) {
                 e.printStackTrace();
             }
 
             try {
-                if(stmt != null) {
-                    stmt.close();
+                if(conn != null) {
+                    conn.close();
                 }
             } catch(Exception e) {
                 e.printStackTrace();
@@ -575,9 +575,9 @@ public class JDBCTest04 {
             stmt = conn.createStatement();
 
             String sql = &quot;select ename, sal from emp&quot;;
+            rs = stmt.executeQuery(sql);
 
             //创建查询结果集对象，对查询结果进行操作
-            rs = stmt.executeQuery(sql);
             while(rs.next()) {
                 String ename = rs.getString(&quot;ename&quot;);
                 String sal = rs.getString(&quot;sal&quot;);
@@ -590,9 +590,9 @@ public class JDBCTest04 {
 
         }finally {
 
-            if(conn != null) {
+            if(rs != null) {
                 try {
-                    conn.close();
+                    rs.close();
                 }catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -606,9 +606,9 @@ public class JDBCTest04 {
                 }
             }
 
-            if(rs != null) {
+            if(conn != null) {
                 try {
-                    rs.close();
+                    conn.close();
                 }catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -669,18 +669,14 @@ password=13013005866</code></pre>
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/blog02.html" rel="next" title="Application of Exception, Multithreading in Java SE">
-                  <i class="fa fa-chevron-left"></i> Application of Exception, Multithreading in Java SE
-                </a>
-              
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
               
-                <a href="/blog01.html" rel="prev" title="Joint application of Exception, IO and recursion in Java SE">
-                  Joint application of Exception, IO and recursion in Java SE <i class="fa fa-chevron-right"></i>
+                <a href="/blog02.html" rel="prev" title="Application of Exception, Multithreading in Java SE">
+                  Application of Exception, Multithreading in Java SE <i class="fa fa-chevron-right"></i>
                 </a>
               
             </div>
