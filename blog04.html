@@ -58,19 +58,19 @@
   };
 </script>
 
-  <meta name="description" content="This is a technology blog!">
-<meta name="keywords" content="java">
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="https://DonnKeefer.github.io/tags/index.html">
+  <meta name="description" content="JDBC process structure in Java SE">
+<meta name="keywords" content="Reflaction&#x2F;JDBC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JDBC process structure in Java SE">
+<meta property="og:url" content="https://DonnKeefer.github.io/blog04.html">
 <meta property="og:site_name" content="DonnKeefer">
-<meta property="og:description" content="This is a technology blog!">
+<meta property="og:description" content="JDBC process structure in Java SE">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-16T05:43:25.499Z">
+<meta property="og:updated_time" content="2019-11-07T03:00:41.274Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tags">
-<meta name="twitter:description" content="This is a technology blog!">
-  <link rel="canonical" href="https://DonnKeefer.github.io/tags/">
+<meta name="twitter:title" content="JDBC process structure in Java SE">
+<meta name="twitter:description" content="JDBC process structure in Java SE">
+  <link rel="canonical" href="https://DonnKeefer.github.io/blog04">
 
 
 <script id="page-configurations">
@@ -78,13 +78,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
-    isPage: true,
+    isPost: true,
+    isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>tags | DonnKeefer</title>
+  <title>JDBC process structure in Java SE | DonnKeefer</title>
   
 
 
@@ -247,66 +247,375 @@
         <div class="content-wrap">
             
 
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-  
-
           <div id="content" class="content">
             
 
   <div id="posts" class="posts-expand">
-    
-    
-    
-    <div class="post-block page">
-      <header class="post-header">
-
-<h1 class="post-title" itemprop="name headline">tags
-
-</h1>
-
-<div class="post-meta">
+      <article itemscope itemtype="http://schema.org/Article">
   
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog04.html">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DonnKeefer">
+      <meta itemprop="description" content="This is a technology blog!">
+      <meta itemprop="image" content="/images/003.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DonnKeefer">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">JDBC process structure in Java SE
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-01 20:42:17" itemprop="dateCreated datePublished" datetime="2019-11-01T20:42:17+08:00">2019-11-01</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-07 11:00:41" itemprop="dateModified" datetime="2019-11-07T11:00:41+08:00">2019-11-07</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/blog04.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blog04.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>3.3k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>3 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>JDBC process structure in Java SE</p>
+<a id="more"></a>
+
+<h3 id="JDBC基本流程六步骤（静态注册）"><a href="#JDBC基本流程六步骤（静态注册）" class="headerlink" title="JDBC基本流程六步骤（静态注册）"></a>JDBC基本流程六步骤（静态注册）</h3><pre><code>import java.sql.*;
+import com.mysql.jdbc.Driver;
+
+public class JDBCTest01 {
+
+    public static void main(String[] args) {
+
+        Connection conn = null;
+        Statement stmt = null;
+
+        try {
+
+            //①获取和注册驱动
+            Driver driver = new com.mysql.jdbc.Driver();
+            DriverManager.registerDriver(driver);
+            //利用反射机制类加载Driver运行静态代码块注册驱动
+            //使用反射机制还需要多处理一个ClassNotFoundException
+//            Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+//            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+
+            //②建立连接
+            String url = &quot;jdbc:mysql://127.0.0.1:3306/bjpowernode&quot;;
+            String user = &quot;root&quot;;
+            String password = &quot;13013005866&quot;;
+            conn = DriverManager.getConnection(url, user, password);
+//            conn = DriverManager.getConnection(&quot;&quot;, &quot;&quot;, &quot;&quot;);
+
+            //③建立sql操作对象
+            stmt = conn.createStatement();
+
+            //④执行sql语句
+            //不写分号
+            String sql = &quot;insert into dept (deptno, dname, loc) values (50, &apos;人事部&apos;, &apos;北京&apos;)&quot;;
+
+            //⑤根据sql语句种类进行处理
+            int count = stmt.executeUpdate(sql);
+            System.out.println(count == 1 ? &quot;插入数据成功&quot; : &quot;插入数据失败&quot;);
+
+        } catch(SQLException e) {
+
+            e.printStackTrace();
+
+        } finally {
+
+            //⑥从小到大释放资源
+            try {
+                if(conn != null) {
+                    conn.close();
+                }
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if(stmt != null) {
+                    stmt.close();
+                }
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+}</code></pre><h3 id="动态注册（IO-Properties）"><a href="#动态注册（IO-Properties）" class="headerlink" title="动态注册（IO+Properties）"></a>动态注册（IO+Properties）</h3><pre><code>import java.sql.*;
+import java.io.*;
+import java.util.*;
+
+public class JDBCTest02 {
+
+    public static void main(String[] args) throws Exception{//涉及到IO上抛一个异常
+
+        Connection conn = null;
+        Statement stmt = null;
+
+        //IO+Properties
+        Properties p = new Properties();
+        FileInputStream fis = new FileInputStream(&quot;D:\\JAVA Code Base\\Java Exercises\\src\\jdbc\\jdbc.properties&quot;);
+        p.load(fis);
+
+        //配置文件获取
+        String driver = p.getProperty(&quot;driver&quot;);
+        String url = p.getProperty(&quot;url&quot;);
+        String user = p.getProperty(&quot;user&quot;);
+        String password = p.getProperty(&quot;password&quot;);
+
+        try {
+
+            Class.forName(driver);
+
+            conn = DriverManager.getConnection(url, user, password);
+
+            stmt = conn.createStatement();
+
+            String sql = &quot;update dept set dname = &apos;销售部&apos;, loc = &apos;天津&apos; where  deptno = 20&quot;;
+            int count = stmt.executeUpdate(sql);
+            System.out.println(count == 1 ? &quot;数据修改成功&quot; : &quot;数据修改失败&quot;);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        } finally {
+
+            try {
+                if(conn != null) {
+                    conn.close();
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if(stmt != null) {
+                    stmt.close();
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+}</code></pre><h3 id="动态注册（ResourceBundle）"><a href="#动态注册（ResourceBundle）" class="headerlink" title="动态注册（ResourceBundle）"></a>动态注册（ResourceBundle）</h3><pre><code>import java.sql.*;
+import java.util.*;
+
+public class JDBCTest03 {
+
+    public static void main(String[] args) {
+
+        Connection conn = null;
+        Statement stmt = null;
+
+        //ResourceBundle
+        ResourceBundle bundle = ResourceBundle.getBundle(&quot;D:\\JAVA Code Base\\Java Exercises\\src\\jdbc\\jdbc.properties&quot;);
+
+        配置文件获取
+        String driver = bundle.getString(&quot;driver&quot;);
+        String url = bundle.getString(&quot;url&quot;);
+        String user = bundle.getString(&quot;user&quot;);
+        String password = bundle.getString(&quot;password&quot;);
+
+        try {
+
+            Class.forName(driver);
+
+            conn = DriverManager.getConnection(url, user, password);
+
+            stmt = conn.createStatement();
+
+            String sql = &quot;update dept set dname = &apos;销售部&apos;, loc = &apos;天津&apos; where  deptno = 20&quot;;
+
+            int count = stmt.executeUpdate(sql);
+            System.out.println(count == 1 ? &quot;数据修改成功&quot; : &quot;数据修改失败&quot;);
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+
+        } finally {
+
+            try {
+                if(conn != null) {
+                    conn.close();
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if(stmt != null) {
+                    stmt.close();
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+}</code></pre><h3 id="jdbc-properties"><a href="#jdbc-properties" class="headerlink" title="jdbc.properties"></a>jdbc.properties</h3><pre><code>driver=com.mysql.jdbc.Driver
+url=jdbc:mysql://localhost:3306/bjpowernode
+user=root
+password=13013005866</code></pre>
+    </div>
+
+    
+    
+    
+        
+      
+        <div id="reward-container">
+  <div></div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.png" alt="DonnKeefer 微信支付">
+        <p>微信支付</p>
+      </div>
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.png" alt="DonnKeefer 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
 </div>
 
-</header>
+      
 
-      
-      
-      
-      <div class="post-body">
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/Reflaction-JDBC/" rel="tag"># Reflaction/JDBC</a>
+            
+          </div>
         
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-              目前共计 4 个标签
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/blog02.html" rel="next" title="Application of Exception, Multithreading in Java SE">
+                  <i class="fa fa-chevron-left"></i> Application of Exception, Multithreading in Java SE
+                </a>
+              
             </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/Exception-Thread/" style="font-size: 12px; color: #ccc">Exception/Thread</a> <a href="/tags/HashMap-HashSet/" style="font-size: 12px; color: #ccc">HashMap/HashSet</a> <a href="/tags/Reflaction-JDBC/" style="font-size: 12px; color: #ccc">Reflaction/JDBC</a> <a href="/tags/io-Exception-recursion/" style="font-size: 12px; color: #ccc">io/Exception/recursion</a>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/blog01.html" rel="prev" title="Joint application of Exception, IO and recursion in Java SE">
+                  Joint application of Exception, IO and recursion in Java SE <i class="fa fa-chevron-right"></i>
+                </a>
+              
             </div>
           </div>
         
-      </div>
-      
-      
-      
-    </div>
+      </footer>
     
+  </div>
+  
+  
+  
+  </article>
 
-    
-    
-    
   </div>
 
 
@@ -346,6 +655,8 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#JDBC基本流程六步骤（静态注册）"><span class="nav-number">1.</span> <span class="nav-text">JDBC基本流程六步骤（静态注册）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态注册（IO-Properties）"><span class="nav-number">2.</span> <span class="nav-text">动态注册（IO+Properties）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态注册（ResourceBundle）"><span class="nav-number">3.</span> <span class="nav-text">动态注册（ResourceBundle）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jdbc-properties"><span class="nav-number">4.</span> <span class="nav-text">jdbc.properties</span></a></li></ol></div>
+        
       </div>
       <!--/noindex-->
 
