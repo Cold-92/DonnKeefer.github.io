@@ -58,19 +58,19 @@
   };
 </script>
 
-  <meta name="description" content="JDBC process structure in Java SE">
-<meta name="keywords" content="Reflaction&#x2F;JDBC">
+  <meta name="description" content="MVC Layered Architecture Foundation Project - ATM System">
+<meta name="keywords" content="HashMap&#x2F;HashSet&#x2F;io&#x2F;MVC">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JDBC process structure in Java SE">
-<meta property="og:url" content="https://DonnKeefer.github.io/blog04.html">
+<meta property="og:title" content="MVC Layered Architecture Foundation Project - ATM System">
+<meta property="og:url" content="https://DonnKeefer.github.io/blog06.html">
 <meta property="og:site_name" content="DonnKeefer">
-<meta property="og:description" content="JDBC process structure in Java SE">
+<meta property="og:description" content="MVC Layered Architecture Foundation Project - ATM System">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-07T13:52:31.505Z">
+<meta property="og:updated_time" content="2019-11-14T16:12:09.101Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JDBC process structure in Java SE">
-<meta name="twitter:description" content="JDBC process structure in Java SE">
-  <link rel="canonical" href="https://DonnKeefer.github.io/blog04">
+<meta name="twitter:title" content="MVC Layered Architecture Foundation Project - ATM System">
+<meta name="twitter:description" content="MVC Layered Architecture Foundation Project - ATM System">
+  <link rel="canonical" href="https://DonnKeefer.github.io/blog06">
 
 
 <script id="page-configurations">
@@ -84,7 +84,7 @@
   };
 </script>
 
-  <title>JDBC process structure in Java SE | DonnKeefer</title>
+  <title>MVC Layered Architecture Foundation Project - ATM System | DonnKeefer</title>
   
 
 
@@ -256,7 +256,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog04.html">
+    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog06.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="DonnKeefer">
@@ -268,7 +268,7 @@
       <meta itemprop="name" content="DonnKeefer">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">JDBC process structure in Java SE
+        <h1 class="post-title" itemprop="name headline">MVC Layered Architecture Foundation Project - ATM System
 
           
         </h1>
@@ -284,7 +284,7 @@
                 
               
 
-              <time title="创建时间：2019-11-01 20:42:17" itemprop="dateCreated datePublished" datetime="2019-11-01T20:42:17+08:00">2019-11-01</time>
+              <time title="创建时间：2019-11-14 23:27:17" itemprop="dateCreated datePublished" datetime="2019-11-14T23:27:17+08:00">2019-11-14</time>
             </span>
           
             
@@ -295,7 +295,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-07 21:52:31" itemprop="dateModified" datetime="2019-11-07T21:52:31+08:00">2019-11-07</time>
+                <time title="修改时间：2019-11-15 00:12:09" itemprop="dateModified" datetime="2019-11-15T00:12:09+08:00">2019-11-15</time>
               </span>
             
           
@@ -319,7 +319,7 @@
       
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/blog04.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blog04.html" itemprop="commentCount"></span></a>
+    <a title="valine" href="/blog06.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blog06.html" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -331,7 +331,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>4.8k</span>
+              <span>5.5k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -341,7 +341,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>4 分钟</span>
+              <span>5 分钟</span>
             </span>
           
 
@@ -354,274 +354,262 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>JDBC process structure in Java SE</p>
+        <p>MVC Layered Architecture Foundation Project - ATM System</p>
 <a id="more"></a>
+<h3 id="利用MVC分层架构的思想，制作一个初级的ATM系统（集中在Model部分）"><a href="#利用MVC分层架构的思想，制作一个初级的ATM系统（集中在Model部分）" class="headerlink" title="利用MVC分层架构的思想，制作一个初级的ATM系统（集中在Model部分）"></a>利用MVC分层架构的思想，制作一个初级的ATM系统（集中在Model部分）</h3><h4 id="User-txt"><a href="#User-txt" class="headerlink" title="User.txt"></a>User.txt</h4><pre><code>张三-666-1000.0
+李四-888-888.0
+王五-123-1123.0</code></pre><h4 id="User-java"><a href="#User-java" class="headerlink" title="User.java"></a>User.java</h4><pre><code>//JavaBean层
+//存储数据，没有逻辑部分
+public class User {
 
-<h3 id="JDBC基本流程六步骤（静态注册）"><a href="#JDBC基本流程六步骤（静态注册）" class="headerlink" title="JDBC基本流程六步骤（静态注册）"></a>JDBC基本流程六步骤（静态注册）</h3><pre><code>import java.sql.*;
-import com.mysql.jdbc.Driver;
+    private String name;
+    private String password;
+    private Float balence;
 
-public class JDBCTest01 {
-
-    public static void main(String[] args) {
-
-        Connection conn = null;
-        Statement stmt = null;
-
-        try {
-
-            //①获取和注册驱动
-            Driver driver = new com.mysql.jdbc.Driver();
-            DriverManager.registerDriver(driver);
-            //利用反射机制类加载Driver运行静态代码块注册驱动
-            //使用反射机制还需要多处理一个ClassNotFoundException
-//            Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
-//            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-
-            //②建立连接
-            String url = &quot;jdbc:mysql://127.0.0.1:3306/bjpowernode&quot;;
-            String user = &quot;root&quot;;
-            String password = &quot;13013005866&quot;;
-            conn = DriverManager.getConnection(url, user, password);
-//            conn = DriverManager.getConnection(&quot;&quot;, &quot;&quot;, &quot;&quot;);
-
-            //③建立sql操作对象
-            stmt = conn.createStatement();
-
-            //④执行sql语句
-            //不写分号
-            String sql = &quot;insert into dept (deptno, dname, loc) values (50, &apos;人事部&apos;, &apos;北京&apos;)&quot;;
-            int count = stmt.executeUpdate(sql);
-            System.out.println(count == 1 ? &quot;插入数据成功&quot; : &quot;插入数据失败&quot;);
-
-            //⑤不是select语句，不能经行数据处理，后也如此
-
-        }catch(SQLException e) {
-
-            e.printStackTrace();
-
-        }finally {
-
-            //⑥从小到大释放资源
-            try {
-                if(stmt != null) {
-                    stmt.close();
-                }
-            }catch(Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if(conn != null) {
-                    conn.close();
-                }
-            }catch(Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
+    public User(){}
+    public User(String name, String password, Float balence){
+        this.name = name;
+        this.password = password;
+        this.balence = balence;
     }
 
-}</code></pre><h3 id="动态注册（IO-Properties）"><a href="#动态注册（IO-Properties）" class="headerlink" title="动态注册（IO+Properties）"></a>动态注册（IO+Properties）</h3><pre><code>import java.sql.*;
-import java.io.*;
-import java.util.*;
-
-public class JDBCTest02 {
-
-    public static void main(String[] args) throws Exception{//涉及到IO上抛一个异常
-
-        Connection conn = null;
-        Statement stmt = null;
-
-        //IO+Properties
-        Properties p = new Properties();
-        FileInputStream fis = new FileInputStream(&quot;D:\\JAVA Code Base\\Java Exercises\\src\\jdbc\\jdbc.properties&quot;);
-        p.load(fis);
-
-        //配置文件获取
-        String driver = p.getProperty(&quot;driver&quot;);
-        String url = p.getProperty(&quot;url&quot;);
-        String user = p.getProperty(&quot;user&quot;);
-        String password = p.getProperty(&quot;password&quot;);
-
-        try {
-
-            Class.forName(driver);
-
-            conn = DriverManager.getConnection(url, user, password);
-
-            stmt = conn.createStatement();
-
-            String sql = &quot;update dept set dname = &apos;销售部&apos;, loc = &apos;天津&apos; where  deptno = 20&quot;;
-            int count = stmt.executeUpdate(sql);
-            System.out.println(count == 1 ? &quot;数据修改成功&quot; : &quot;数据修改失败&quot;);
-
-        }catch (Exception e) {
-
-            e.printStackTrace();
-
-        }finally {
-
-            try {
-                if(stmt != null) {
-                    stmt.close();
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if(conn != null) {
-                    conn.close();
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public Float getBalence() {
+        return balence;
+    }
+    public void setBalence(Float balence) {
+        this.balence = balence;
     }
 
-}</code></pre><h3 id="动态注册（ResourceBundle）"><a href="#动态注册（ResourceBundle）" class="headerlink" title="动态注册（ResourceBundle）"></a>动态注册（ResourceBundle）</h3><pre><code>import java.sql.*;
-import java.util.*;
+}</code></pre><h4 id="AtmDao"><a href="#AtmDao" class="headerlink" title="AtmDao"></a>AtmDao</h4><pre><code>import java.util.HashMap;
 
-public class JDBCTest03 {
+//Dao层（AtmDao+FileLoaderAndCommit）---持久层
+//操作数据
+//操作集合
+//无业务逻辑
+public class AtmDao {
 
-    public static void main(String[] args) {
+    //封装出去的部分，专门用户加载文件，更新文件数据
+    private FileLoaderAndCommit flac = new FileLoaderAndCommit(&quot;src//atmSystem//User.txt&quot;);
+    private HashMap&lt;String, User&gt; userBox = flac.fileLoader();
 
-        Connection conn = null;
-        Statement stmt = null;
-
-        //ResourceBundle
-        ResourceBundle bundle = ResourceBundle.getBundle(&quot;D:\\JAVA Code Base\\Java Exercises\\src\\jdbc\\jdbc.properties&quot;);
-
-        配置文件获取
-        String driver = bundle.getString(&quot;driver&quot;);
-        String url = bundle.getString(&quot;url&quot;);
-        String user = bundle.getString(&quot;user&quot;);
-        String password = bundle.getString(&quot;password&quot;);
-
-        try {
-
-            Class.forName(driver);
-
-            conn = DriverManager.getConnection(url, user, password);
-
-            stmt = conn.createStatement();
-
-            String sql = &quot;update dept set dname = &apos;销售部&apos;, loc = &apos;天津&apos; where  deptno = 20&quot;;
-            int count = stmt.executeUpdate(sql);
-            System.out.println(count == 1 ? &quot;数据修改成功&quot; : &quot;数据修改失败&quot;);
-
-        }catch(Exception e) {
-
-            e.printStackTrace();
-
-        }finally {
-
-            try {
-                if(stmt != null) {
-                    stmt.close();
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if(conn != null) {
-                    conn.close();
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
+    //业务服务方法：通过名字找到人,以后从数据库中查可能需要多条语句
+    //优化
+    public User selectOne(String name){
+        return userBox.get(name);
     }
 
-}</code></pre><h3 id="处理查询结果集（IO-Properties）"><a href="#处理查询结果集（IO-Properties）" class="headerlink" title="处理查询结果集（IO+Properties）"></a>处理查询结果集（IO+Properties）</h3><pre><code>import java.sql.*;
-import java.util.*;
-import java.io.*;
+    //业务服务方法：将修改过的数据重新添加到集合之中
+    //Map是不可重复的，相同健之间直接覆盖
+    public void update(User user){
+        userBox.put(user.getName(), user);
+        //自动提交
+        flac.commit(userBox);
+    }
 
-public class JDBCTest04 {
+}</code></pre><h4 id="FileLoaderAndCommit"><a href="#FileLoaderAndCommit" class="headerlink" title="FileLoaderAndCommit"></a>FileLoaderAndCommit</h4><pre><code>import java.io.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-    public static void main(String[] args) throws Exception{
+//专门用来操作文件
+//从Dao层拆分出来的
+public class FileLoaderAndCommit {
 
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
+    private String fileName = null;
+    public FileLoaderAndCommit(String fileName){
+        this.fileName = fileName;
+    }
 
-        Properties p = new Properties();
-        FileInputStream fis = new FileInputStream(&quot;D:\\JAVA Code Base\\Java Exercises\\src\\jdbc\\jdbc.properties&quot;);
-        p.load(fis);
+    //用一个容器充当缓存，使得读取速率增高
+    //还能用来做数据的修改（覆盖源文件）
+    //键为人名，值是一个自定义对象，可读性更好
+    private HashMap&lt;String, User&gt; userBox = new HashMap&lt;&gt;();
 
-        String driver = p.getProperty(&quot;driver&quot;);
-        String url = p.getProperty(&quot;url&quot;);
-        String user = p.getProperty(&quot;user&quot;);
-        String password = p.getProperty(&quot;password&quot;);
-
-//        ResourceBundle bundle = ResourceBundle.getBundle(&quot;D:\\JAVA Code Base\\Java Exercises\\src\\jdbc\\jdbc.properties&quot;);    
-//        String driver = bundle.getString(&quot;driver&quot;);
-//        String url = bundle.getString(&quot;url&quot;);
-//        String user = bundle.getString(&quot;user&quot;);
-//        String password = bundle.getString(&quot;password&quot;);
-
-        try {
-
-            Class.forName(driver);
-
-            conn = DriverManager.getConnection(url, user, password);
-
-            stmt = conn.createStatement();
-
-            String sql = &quot;select ename, sal from emp&quot;;
-            rs = stmt.executeQuery(sql);
-
-            //创建查询结果集对象，对查询结果进行操作
-            while(rs.next()) {
-                String ename = rs.getString(&quot;ename&quot;);
-                String sal = rs.getString(&quot;sal&quot;);
-                System.out.println(&quot;ename:&quot; + ename + &quot;,&quot; + &quot;sal:&quot; + sal);
+    //将文件中的信息一次性读入缓存
+    public HashMap&lt;String, User&gt; fileLoader(){
+        FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
+        try{
+            //获取用户文件
+            File file = new File(fileName);
+            fileReader = new FileReader(file);
+            bufferedReader = new BufferedReader(fileReader);
+            //获取每一行的用户信息
+            String value = bufferedReader.readLine();
+            while(value != null){
+                String[] userValues = value.split(&quot;-&quot;);
+                User user = new User(userValues[0], userValues[1], Float.parseFloat(userValues[2]));
+                userBox.put(user.getName(), user);
+                value = bufferedReader.readLine();
             }
-
-        }catch (Exception e) {
-
+        }catch(Exception e){
             e.printStackTrace();
-
-        }finally {
-
-            if(rs != null) {
-                try {
-                    rs.close();
-                }catch(Exception e) {
+        }finally{
+            if(fileReader != null){
+                try{
+                    fileReader.close();
+                }catch(Exception e){
                     e.printStackTrace();
                 }
             }
-
-            if(stmt != null) {
-                try {
-                    stmt.close();
-                }catch(Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if(conn != null) {
-                try {
-                    conn.close();
-                }catch(Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
         }
-
+        return userBox;
     }
 
-}</code></pre><h3 id="jdbc-properties"><a href="#jdbc-properties" class="headerlink" title="jdbc.properties"></a>jdbc.properties</h3><pre><code>driver=com.mysql.jdbc.Driver
-url=jdbc:mysql://localhost:3306/bjpowernode
-user=root
-password=13013005866</code></pre>
+    //业务服务方法，将临时性数据写到文件里
+    public void commit(Map&lt;String, User&gt; userBox){
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+        try{
+            //创建文件写入流
+            File file = new File(fileName);
+            fileWriter = new FileWriter(file);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            //开始覆盖
+            Iterator&lt;String&gt; iterator = userBox.keySet().iterator();
+            while(iterator.hasNext()){
+                User user = userBox.get(iterator.next());
+                //频繁字符拼接用StringBuilder
+                StringBuilder stringBuilder = new StringBuilder(user.getName());
+                stringBuilder.append(&quot;-&quot;);
+                stringBuilder.append(user.getPassword());
+                stringBuilder.append(&quot;-&quot;);
+                stringBuilder.append(user.getBalence());
+                //整个一行复制掉原文件顺序对应的一行
+                bufferedWriter.write(stringBuilder.toString());
+                //将当前整个一行压进去
+                bufferedWriter.flush();
+                //换一行
+                bufferedWriter.newLine();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            //将缓存中更改后的数据覆盖掉原文件
+        }finally{
+            try{
+                if(fileWriter != null)
+                    fileWriter.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+}</code></pre><h4 id="AtmService"><a href="#AtmService" class="headerlink" title="AtmService"></a>AtmService</h4><pre><code>//数据处理层，只有业务逻辑
+//判断，比较，计算
+public class AtmService {
+    //需要Dao层支持
+    AtmDao dao = new AtmDao();
+
+    //业务方法：登录
+    public String login(String name, String password){
+        User user = dao.selectOne(name);
+        if(user.getPassword() == null &amp;&amp; user.getPassword().equals(password)){
+            return &quot;登录成功&quot;;
+        }
+        return &quot;登录失败&quot;;
+    }
+
+    //业务方法：查询余额
+    public Float qureyBalence(String name){
+        User user = dao.selectOne(name);
+        return user.getBalence();
+    }
+
+    //业务方法：存款
+    public void deposit(String name, Float depositMoney){
+        //修改缓存中数据
+        User user = dao.selectOne(name);
+        user.setBalence(user.getBalence() + depositMoney);
+        dao.update(user);
+        System.out.println(&quot;存款成功！&quot;);
+    }
+
+    //业务方法：取款
+    public void withdraw(String name, Float withdrawMoney){
+        User user = dao.selectOne(name);
+        if(user.getBalence() &gt; withdrawMoney){
+            user.setBalence(user.getBalence() - withdrawMoney);
+            dao.update(user);
+            System.out.println(&quot;取款成功！&quot;);
+        }else{
+             System.out.println(&quot;对不起&quot; + name + &quot;您的余额不足&quot;);
+        }
+    }
+
+    //业务方法：转账
+    //aName转给bName
+    public void transfer(String aName, String bName, Float transferMoney){
+        User user1 = dao.selectOne(aName);
+        User user2 = dao.selectOne(bName);
+        if(user1.getBalence() &lt; transferMoney || user1 == null || user2 == null){
+            System.out.println(&quot;对不起&quot; + aName + &quot;您的转账操作失败&quot;);
+        }else{
+            user1.setBalence(user1.getBalence() - transferMoney);
+            user2.setBalence(user2.getBalence() + transferMoney);
+            //先更新转帐的人的的钱，再更新被转账的人的钱
+            //如果先更新被转账的人的钱，如果再根性转账的人的钱发生异常，银行就会赔钱
+            dao.update(user1);
+            dao.update(user2);
+            System.out.println(&quot;转账成功！&quot;);
+        }
+    }
+
+}</code></pre><h4 id="AtmTest"><a href="#AtmTest" class="headerlink" title="AtmTest"></a>AtmTest</h4><pre><code>import java.util.*;
+
+public class AtmTest {
+
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+
+        AtmService atmService = new AtmService();
+
+        System.out.println(&quot;欢迎来到太平洋标准银行&quot;);
+        System.out.print(&quot;请输入账号：&quot;);
+        String name = sc.nextLine();
+        System.out.print(&quot;请输入密码：&quot;);
+        String password = sc.nextLine();
+        atmService.login(name, password);
+
+        System.out.println(&quot;存款请按1\n取款请按2\n转账请按3\n查询余额请按4&quot;);
+        System.out.print(&quot;请输入您的选择：&quot;);
+        int input = sc.nextInt();
+        sc.nextLine();
+        switch(input){
+            case 1:
+                System.out.print(&quot;请输入要存款的钱数：&quot;);
+                Float depositMoney = sc.nextFloat();
+                atmService.deposit(name, depositMoney);
+                break;
+            case 2:
+                System.out.print(&quot;请输入要取款的钱数：&quot;);
+                Float withdrawMoney = sc.nextFloat();
+                atmService.withdraw(name, withdrawMoney);
+                break;
+            case 3:
+                System.out.print(&quot;请输入要转账人的姓名：&quot;);
+                String bname = sc.nextLine();
+                System.out.print(&quot;请输入要转账的钱数：&quot;);
+                Float transferMoney = sc.nextFloat();
+                atmService.transfer(name, bname, transferMoney);
+            case 4:
+                System.out.println(atmService.qureyBalence(name));
+        }
+    }
+
+}</code></pre>
     </div>
 
     
@@ -659,7 +647,7 @@ password=13013005866</code></pre>
           
           <div class="post-tags">
             
-              <a href="/tags/Reflaction-JDBC/" rel="tag"># Reflaction/JDBC</a>
+              <a href="/tags/HashMap-HashSet-io-MVC/" rel="tag"># HashMap/HashSet/io/MVC</a>
             
           </div>
         
@@ -669,15 +657,15 @@ password=13013005866</code></pre>
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
+                <a href="/blob03.html" rel="next" title="Joint application of HashMap，HashSet in Java SE">
+                  <i class="fa fa-chevron-left"></i> Joint application of HashMap，HashSet in Java SE
+                </a>
+              
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/blog02.html" rel="prev" title="Application of Exception, Multithreading in Java SE">
-                  Application of Exception, Multithreading in Java SE <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -729,7 +717,7 @@ password=13013005866</code></pre>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#JDBC基本流程六步骤（静态注册）"><span class="nav-number">1.</span> <span class="nav-text">JDBC基本流程六步骤（静态注册）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态注册（IO-Properties）"><span class="nav-number">2.</span> <span class="nav-text">动态注册（IO+Properties）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态注册（ResourceBundle）"><span class="nav-number">3.</span> <span class="nav-text">动态注册（ResourceBundle）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理查询结果集（IO-Properties）"><span class="nav-number">4.</span> <span class="nav-text">处理查询结果集（IO+Properties）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jdbc-properties"><span class="nav-number">5.</span> <span class="nav-text">jdbc.properties</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#利用MVC分层架构的思想，制作一个初级的ATM系统（集中在Model部分）"><span class="nav-number">1.</span> <span class="nav-text">利用MVC分层架构的思想，制作一个初级的ATM系统（集中在Model部分）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#User-txt"><span class="nav-number">1.1.</span> <span class="nav-text">User.txt</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#User-java"><span class="nav-number">1.2.</span> <span class="nav-text">User.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AtmDao"><span class="nav-number">1.3.</span> <span class="nav-text">AtmDao</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FileLoaderAndCommit"><span class="nav-number">1.4.</span> <span class="nav-text">FileLoaderAndCommit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AtmService"><span class="nav-number">1.5.</span> <span class="nav-text">AtmService</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AtmTest"><span class="nav-number">1.6.</span> <span class="nav-text">AtmTest</span></a></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->

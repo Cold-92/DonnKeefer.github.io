@@ -1,9 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title></title>
-    <url>/blog05.html</url>
-    <content><![CDATA[]]></content>
+    <title>MVC Layered Architecture Foundation Project - ATM System</title>
+    <url>/blog06.html</url>
+    <content><![CDATA[<p>MVC Layered Architecture Foundation Project - ATM System</p>
+<a id="more"></a>
+<h3 id="利用MVC分层架构的思想，制作一个初级的ATM系统（集中在Model部分）"><a href="#利用MVC分层架构的思想，制作一个初级的ATM系统（集中在Model部分）" class="headerlink" title="利用MVC分层架构的思想，制作一个初级的ATM系统（集中在Model部分）"></a>利用MVC分层架构的思想，制作一个初级的ATM系统（集中在Model部分）</h3><h4 id="User-txt"><a href="#User-txt" class="headerlink" title="User.txt"></a>User.txt</h4><pre><code>张三-666-1000.0
+李四-888-888.0
+王五-123-1123.0</code></pre><h4 id="User-java"><a href="#User-java" class="headerlink" title="User.java"></a>User.java</h4><pre><code>//JavaBean层
+//存储数据，没有逻辑部分
+public class User {
+
+    private String name;
+    private String password;
+    private Float balence;
+
+    public User(){}
+    public User(String name, String password, Float balence){
+        this.name = name;
+        this.password = password;
+        this.balence = balence;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public Float getBalence() {
+        return balence;
+    }
+    public void setBalence(Float balence) {
+        this.balence = balence;
+    }
+
+}</code></pre><h4 id="AtmDao"><a href="#AtmDao" class="headerlink" title="AtmDao"></a>AtmDao</h4><pre><code>import java.util.HashMap;
+
+//Dao层（AtmDao+FileLoaderAndCommit）---持久层
+//操作数据
+//操作集合
+//无业务逻辑
+public class AtmDao {
+
+    //封装出去的部分，专门用户加载文件，更新文件数据
+    private FileLoaderAndCommit flac = new FileLoaderAndCommit(&quot;src//atmSystem//User.txt&quot;);
+    private HashMap&lt;String, User&gt; userBox = flac.fileLoader();
+
+    //业务服务方法：通过名字找到人,以后从数据库中查可能需要多条语句
+    //优化
+    public User selectOne(String name){
+        return userBox.get(name);
+    }
+
+    //业务服务方法：将修改过的数据重新添加到集合之中
+    //Map是不可重复的，相同健之间直接覆盖
+    public void update(User user){
+        userBox.put(user.getName(), user);
+        //自动提交
+        flac.commit(userBox);
+    }
+
+}</code></pre><h4 id="FileLoaderAndCommit"><a href="#FileLoaderAndCommit" class="headerlink" title="FileLoaderAndCommit"></a>FileLoaderAndCommit</h4><pre><code>import java.io.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+//专门用来操作文件
+//从Dao层拆分出来的
+public class FileLoaderAndCommit {
+
+    private String fileName = null;
+    public FileLoaderAndCommit(String fileName){
+        this.fileName = fileName;
+    }
+
+    //用一个容器充当缓存，使得读取速率增高
+    //还能用来做数据的修改（覆盖源文件）
+    //键为人名，值是一个自定义对象，可读性更好
+    private HashMap&lt;String, User&gt; userBox = new HashMap&lt;&gt;();
+
+    //将文件中的信息一次性读入缓存
+    public HashMap&lt;String, User&gt; fileLoader(){
+        FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
+        try{
+            //获取用户文件
+            File file = new File(fileName);
+            fileReader = new FileReader(file);
+            bufferedReader = new BufferedReader(fileReader);
+            //获取每一行的用户信息
+            String value = bufferedReader.readLine();
+            while(value != null){
+                String[] userValues = value.split(&quot;-&quot;);
+                User user = new User(userValues[0], userValues[1], Float.parseFloat(userValues[2]));
+                userBox.put(user.getName(), user);
+                value = bufferedReader.readLine();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            if(fileReader != null){
+                try{
+                    fileReader.close();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        return userBox;
+    }
+
+    //业务服务方法，将临时性数据写到文件里
+    public void commit(Map&lt;String, User&gt; userBox){
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+        try{
+            //创建文件写入流
+            File file = new File(fileName);
+            fileWriter = new FileWriter(file);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            //开始覆盖
+            Iterator&lt;String&gt; iterator = userBox.keySet().iterator();
+            while(iterator.hasNext()){
+                User user = userBox.get(iterator.next());
+                //频繁字符拼接用StringBuilder
+                StringBuilder stringBuilder = new StringBuilder(user.getName());
+                stringBuilder.append(&quot;-&quot;);
+                stringBuilder.append(user.getPassword());
+                stringBuilder.append(&quot;-&quot;);
+                stringBuilder.append(user.getBalence());
+                //整个一行复制掉原文件顺序对应的一行
+                bufferedWriter.write(stringBuilder.toString());
+                //将当前整个一行压进去
+                bufferedWriter.flush();
+                //换一行
+                bufferedWriter.newLine();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            //将缓存中更改后的数据覆盖掉原文件
+        }finally{
+            try{
+                if(fileWriter != null)
+                    fileWriter.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+}</code></pre><h4 id="AtmService"><a href="#AtmService" class="headerlink" title="AtmService"></a>AtmService</h4><pre><code>//数据处理层，只有业务逻辑
+//判断，比较，计算
+public class AtmService {
+    //需要Dao层支持
+    AtmDao dao = new AtmDao();
+
+    //业务方法：登录
+    public String login(String name, String password){
+        User user = dao.selectOne(name);
+        if(user.getPassword() == null &amp;&amp; user.getPassword().equals(password)){
+            return &quot;登录成功&quot;;
+        }
+        return &quot;登录失败&quot;;
+    }
+
+    //业务方法：查询余额
+    public Float qureyBalence(String name){
+        User user = dao.selectOne(name);
+        return user.getBalence();
+    }
+
+    //业务方法：存款
+    public void deposit(String name, Float depositMoney){
+        //修改缓存中数据
+        User user = dao.selectOne(name);
+        user.setBalence(user.getBalence() + depositMoney);
+        dao.update(user);
+        System.out.println(&quot;存款成功！&quot;);
+    }
+
+    //业务方法：取款
+    public void withdraw(String name, Float withdrawMoney){
+        User user = dao.selectOne(name);
+        if(user.getBalence() &gt; withdrawMoney){
+            user.setBalence(user.getBalence() - withdrawMoney);
+            dao.update(user);
+            System.out.println(&quot;取款成功！&quot;);
+        }else{
+             System.out.println(&quot;对不起&quot; + name + &quot;您的余额不足&quot;);
+        }
+    }
+
+    //业务方法：转账
+    //aName转给bName
+    public void transfer(String aName, String bName, Float transferMoney){
+        User user1 = dao.selectOne(aName);
+        User user2 = dao.selectOne(bName);
+        if(user1.getBalence() &lt; transferMoney || user1 == null || user2 == null){
+            System.out.println(&quot;对不起&quot; + aName + &quot;您的转账操作失败&quot;);
+        }else{
+            user1.setBalence(user1.getBalence() - transferMoney);
+            user2.setBalence(user2.getBalence() + transferMoney);
+            //先更新转帐的人的的钱，再更新被转账的人的钱
+            //如果先更新被转账的人的钱，如果再根性转账的人的钱发生异常，银行就会赔钱
+            dao.update(user1);
+            dao.update(user2);
+            System.out.println(&quot;转账成功！&quot;);
+        }
+    }
+
+}</code></pre><h4 id="AtmTest"><a href="#AtmTest" class="headerlink" title="AtmTest"></a>AtmTest</h4><pre><code>import java.util.*;
+
+public class AtmTest {
+
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+
+        AtmService atmService = new AtmService();
+
+        System.out.println(&quot;欢迎来到太平洋标准银行&quot;);
+        System.out.print(&quot;请输入账号：&quot;);
+        String name = sc.nextLine();
+        System.out.print(&quot;请输入密码：&quot;);
+        String password = sc.nextLine();
+        atmService.login(name, password);
+
+        System.out.println(&quot;存款请按1\n取款请按2\n转账请按3\n查询余额请按4&quot;);
+        System.out.print(&quot;请输入您的选择：&quot;);
+        int input = sc.nextInt();
+        sc.nextLine();
+        switch(input){
+            case 1:
+                System.out.print(&quot;请输入要存款的钱数：&quot;);
+                Float depositMoney = sc.nextFloat();
+                atmService.deposit(name, depositMoney);
+                break;
+            case 2:
+                System.out.print(&quot;请输入要取款的钱数：&quot;);
+                Float withdrawMoney = sc.nextFloat();
+                atmService.withdraw(name, withdrawMoney);
+                break;
+            case 3:
+                System.out.print(&quot;请输入要转账人的姓名：&quot;);
+                String bname = sc.nextLine();
+                System.out.print(&quot;请输入要转账的钱数：&quot;);
+                Float transferMoney = sc.nextFloat();
+                atmService.transfer(name, bname, transferMoney);
+            case 4:
+                System.out.println(atmService.qureyBalence(name));
+        }
+    }
+
+}</code></pre>]]></content>
+      <tags>
+        <tag>HashMap/HashSet/io/MVC</tag>
+      </tags>
   </entry>
   <entry>
     <title>Joint application of HashMap，HashSet in Java SE</title>
