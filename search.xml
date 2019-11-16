@@ -3,7 +3,7 @@
   <entry>
     <title>C/S Development Mode in Java SE Network programming</title>
     <url>/blog07.html</url>
-    <content><![CDATA[<p>Simulate file Upload System</p>
+    <content><![CDATA[<p>Simulate File Upload System</p>
 <a id="more"></a>
 <h3 id="利用C-S开发模式和网络编程，制作一个多线程文件上传系统"><a href="#利用C-S开发模式和网络编程，制作一个多线程文件上传系统" class="headerlink" title="利用C/S开发模式和网络编程，制作一个多线程文件上传系统"></a>利用C/S开发模式和网络编程，制作一个多线程文件上传系统</h3><h4 id="TCPClient-java"><a href="#TCPClient-java" class="headerlink" title="TCPClient.java"></a>TCPClient.java</h4><pre><code>import java.net.*;
 import java.io.*;
