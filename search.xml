@@ -1,6 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Functional Programming And Lambda Expressions in Java SE</title>
+    <url>/blog08.html</url>
+    <content><![CDATA[<p>Functional Interfaces And Lambda Expressions in Java SE</p>
+<a id="more"></a>
+<h3 id="函数式接口和Lambda表达式的使用"><a href="#函数式接口和Lambda表达式的使用" class="headerlink" title="函数式接口和Lambda表达式的使用"></a>函数式接口和Lambda表达式的使用</h3><h4 id="函数式接口作参数"><a href="#函数式接口作参数" class="headerlink" title="函数式接口作参数"></a>函数式接口作参数</h4><pre><code>public class demo01 {
+
+    public static void startThread(Runnable runnable){
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+
+    public static void main(String[] args) {
+
+        //传统匿名内部类做为参数
+        demo01.startThread(new Runnable(){
+            @Override
+            public void run() {
+                System.out.println(Thread.currentThread().getName()+&quot;---&gt;&quot;+&quot;已启动&quot;);
+            }
+        });
+
+        //lambda表达式做参数
+        demo01.startThread(()-&gt;{
+            System.out.println(Thread.currentThread().getName()+&quot;---&gt;&quot;+&quot;已启动&quot;);
+        });
+
+        //优化过后的lambda表达式做参数
+        demo01.startThread(()-&gt; System.out.println(Thread.currentThread().getName()+&quot;---&gt;&quot;+&quot;已启动&quot;));
+
+    }
+
+}</code></pre><h4 id="函数式接口作返回值"><a href="#函数式接口作返回值" class="headerlink" title="函数式接口作返回值"></a>函数式接口作返回值</h4><pre><code>//函数式接口做返回值
+public class demo02 {
+
+    //比较器的实现
+    public static Comparator&lt;String&gt; getComparator(){
+
+        //匿名内部类实现接口
+//        return new Comparator&lt;String&gt;() {
+//            @Override
+//            public int compare(String o1, String o2) {
+//                return o1-o2;
+//            }
+//        }
+
+        //lambda表达式实现接口
+//        return (String o1, String o2)-&gt;{
+//            //字符串长度升序排序
+//            return o1.length()-o2.length();
+//        };
+
+        //优化lambda表达式
+        //字符串长度降序排序
+        return (o1, o2)-&gt;o2.length()-o1.length();
+
+    }
+
+    public static void main(String[] args) {
+
+        String[] strings = {&quot;aaa&quot;, &quot;bbbb&quot;, &quot;ccccc&quot;};
+
+        //调用Arrays中sort方法对字符串数组进行排序，需要提供比较器
+        Arrays.sort(strings, demo02.getComparator());
+
+        //调用Arrays中toString输出字符串数组
+        System.out.println(Arrays.toString(strings));
+
+    }
+
+}</code></pre>]]></content>
+      <tags>
+        <tag>Lambda/Functional Interface</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>C/S Development Mode in Java SE Network programming</title>
     <url>/blog07.html</url>
     <content><![CDATA[<p>Simulate File Upload System</p>
@@ -672,6 +747,94 @@ public class CopyFiles {
       </tags>
   </entry>
   <entry>
+    <title>Application of Exception, Multithreading in Java SE</title>
+    <url>/blog02.html</url>
+    <content><![CDATA[<p>Application of Exception, Multithreading in Java SE</p>
+<a id="more"></a>
+<h3 id="双线程交替输出1，2，3，4…"><a href="#双线程交替输出1，2，3，4…" class="headerlink" title="双线程交替输出1，2，3，4…"></a>双线程交替输出1，2，3，4…</h3><h4 id="Number-java"><a href="#Number-java" class="headerlink" title="Number.java"></a>Number.java</h4><pre><code>public class Number {
+
+    int number;
+
+    public Number(int number) {
+        this.number = number;
+    }
+
+    public synchronized void printOdd() {
+        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t1执行
+        this.notifyAll();//把t2唤醒，此时t2没有对象锁，处于就绪状态
+        try {
+            Thread.sleep(1000);
+            this.wait();//1s后，将t1睡眠，t1归还对象锁，t2获取对象锁
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized void printEven() {
+        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t2执行
+        this.notifyAll();//把t1唤醒，此时t1没有对象锁，处于就绪状态
+        try {
+            Thread.sleep(1000);
+            this.wait();//1s后，将t2睡眠，t2归还对象锁，t1获取对象锁
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+}</code></pre><h4 id="PrintOdd-java"><a href="#PrintOdd-java" class="headerlink" title="PrintOdd.java"></a>PrintOdd.java</h4><pre><code>public class PrintOdd implements Runnable {
+
+    Number num;
+
+    public PrintOdd(Number num) {
+        this.num = num;
+    }
+
+    public void run() {
+        while(true) {
+            this.num.printOdd();
+        }
+    }
+
+}</code></pre><h4 id="PrintEven-java"><a href="#PrintEven-java" class="headerlink" title="PrintEven.java"></a>PrintEven.java</h4><pre><code>public class PrintEven implements Runnable{
+
+    Number num;
+
+    public PrintEven(Number num) {
+        this.num = num;
+    }
+
+    public void run() {
+        while(true) {
+            this.num.printEven();
+        }
+    }
+
+}</code></pre><h4 id="Test-java"><a href="#Test-java" class="headerlink" title="Test.java"></a>Test.java</h4><pre><code>public class Text {
+
+    public static void main(String[] args) throws Exception {
+
+        Number num = new Number(1);
+
+        Thread t1 = new Thread(new PrintOdd(num));//双线程共享同一数据
+        t1.setName(&quot;t1&quot;);
+
+        Thread t2 = new Thread(new PrintEven(num));
+        t2.setName(&quot;t2&quot;);
+
+        t1.start();//让t1先执行
+
+        Thread.sleep(1000);
+
+        t2.start();
+
+    }
+
+}</code></pre>]]></content>
+      <tags>
+        <tag>Exception/Thread</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JDBC process structure in Java SE</title>
     <url>/blog04.html</url>
     <content><![CDATA[<p>JDBC process structure in Java SE</p>
@@ -944,94 +1107,6 @@ user=root
 password=13013005866</code></pre>]]></content>
       <tags>
         <tag>Reflaction/JDBC</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Application of Exception, Multithreading in Java SE</title>
-    <url>/blog02.html</url>
-    <content><![CDATA[<p>Application of Exception, Multithreading in Java SE</p>
-<a id="more"></a>
-<h3 id="双线程交替输出1，2，3，4…"><a href="#双线程交替输出1，2，3，4…" class="headerlink" title="双线程交替输出1，2，3，4…"></a>双线程交替输出1，2，3，4…</h3><h4 id="Number-java"><a href="#Number-java" class="headerlink" title="Number.java"></a>Number.java</h4><pre><code>public class Number {
-
-    int number;
-
-    public Number(int number) {
-        this.number = number;
-    }
-
-    public synchronized void printOdd() {
-        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t1执行
-        this.notifyAll();//把t2唤醒，此时t2没有对象锁，处于就绪状态
-        try {
-            Thread.sleep(1000);
-            this.wait();//1s后，将t1睡眠，t1归还对象锁，t2获取对象锁
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public synchronized void printEven() {
-        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t2执行
-        this.notifyAll();//把t1唤醒，此时t1没有对象锁，处于就绪状态
-        try {
-            Thread.sleep(1000);
-            this.wait();//1s后，将t2睡眠，t2归还对象锁，t1获取对象锁
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-}</code></pre><h4 id="PrintOdd-java"><a href="#PrintOdd-java" class="headerlink" title="PrintOdd.java"></a>PrintOdd.java</h4><pre><code>public class PrintOdd implements Runnable {
-
-    Number num;
-
-    public PrintOdd(Number num) {
-        this.num = num;
-    }
-
-    public void run() {
-        while(true) {
-            this.num.printOdd();
-        }
-    }
-
-}</code></pre><h4 id="PrintEven-java"><a href="#PrintEven-java" class="headerlink" title="PrintEven.java"></a>PrintEven.java</h4><pre><code>public class PrintEven implements Runnable{
-
-    Number num;
-
-    public PrintEven(Number num) {
-        this.num = num;
-    }
-
-    public void run() {
-        while(true) {
-            this.num.printEven();
-        }
-    }
-
-}</code></pre><h4 id="Test-java"><a href="#Test-java" class="headerlink" title="Test.java"></a>Test.java</h4><pre><code>public class Text {
-
-    public static void main(String[] args) throws Exception {
-
-        Number num = new Number(1);
-
-        Thread t1 = new Thread(new PrintOdd(num));//双线程共享同一数据
-        t1.setName(&quot;t1&quot;);
-
-        Thread t2 = new Thread(new PrintEven(num));
-        t2.setName(&quot;t2&quot;);
-
-        t1.start();//让t1先执行
-
-        Thread.sleep(1000);
-
-        t2.start();
-
-    }
-
-}</code></pre>]]></content>
-      <tags>
-        <tag>Exception/Thread</tag>
       </tags>
   </entry>
 </search>
