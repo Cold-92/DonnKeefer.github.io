@@ -1,6 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>String Operation Exercises</title>
+    <url>/blog10.html</url>
+    <content><![CDATA[<pre><code>public class Test {
+
+    public static void main(String[] args) {
+        String str1 = &quot;ok&quot;;
+        Test.m1(str1);
+        Test.m11(str1);
+        Test.m111(str1);
+
+        Test.m2(str1);
+
+        String str2 = &quot;abccba&quot;;
+        String str3 = &quot;abcba&quot;;
+        Test.m3(str2);
+        Test.m3(str3);
+
+        String str4 = &quot;helloworld&quot;;
+        Test.m4(str4, 2);
+
+        String str5 = &quot;abc,abcd,ab&quot;;
+        Test.m5(str5);
+
+        String str6 = &quot;abcda&quot;;
+        Test.m6(str6, &apos;a&apos;);
+        Test.m61(str6, &apos;a&apos;);
+
+        String str7 = &quot;this is a bad gay&quot;;
+        Test.m7(str7);
+
+        String str8 = &quot;abc11ds32&quot;;
+        Test.m8(str8);
+    }
+
+
+    //字符串反转
+    //思路：拆成char[]，反向拼接
+    public static void m1(String str){
+        String resultStr = &quot;&quot;;
+        char[] values = str.toCharArray();
+
+        for(int i = values.length-1; i &gt;= 0; i--){
+            resultStr = resultStr.concat(values[i] + &quot;&quot;);
+        }
+
+        System.out.println(resultStr);
+    }
+    //第二种方法
+    public static void m11(String str){
+        char[] values = str.toCharArray();
+
+        for(int i = 0; i &lt; values.length/2; i++){
+            char temp = values[i];
+            values[i] = values[values.length-1-i];
+            values[values.length-1-i] = temp;
+        }
+
+        System.out.println(new String(values));
+    }
+    //第三种方法
+    public static void m111(String str){
+        System.out.println(new String(new StringBuffer(str).reverse()));
+    }
+
+
+    //字符串正序和反序进行连接
+    //思路：将目标字符串拆成char[]，正向拼接一次，反向拼接一次
+    public static void m2(String str){
+        String resultStr = &quot;&quot;;
+        char[] values = str.toCharArray();
+
+        for(int i = 0; i &lt; values.length; i++){
+            resultStr = resultStr.concat(values[i]+&quot;&quot;);//char转换成String才能拼接
+        }
+
+        for(int i = values.length-1; i &gt;= 0; i--){
+            resultStr = resultStr.concat(values[i]+&quot;&quot;);
+        }
+
+        System.out.println(resultStr);
+    }
+
+
+    //判断给定字符串是否是回文
+    //思路：String拆成char[]，首位各做一个标记，往中遍历
+    //注意：char[]有可能是双数，有可能是单数，如果循环条件是 i ！= j，双数的i，j永远不会相等
+    //     比如判断abcba，i要走到1，j走到3，最后都遍历到2，循环跳出
+    //     如果判断abccba，i要走到2，j要走到3，永不会碰到
+    //     所以，把握住i和j是同时移动的，只看一边就行，在abcba中，如果i走到2还没报错，那String就一定是回文
+    public static void m3(String str){
+        char[] values = str.toCharArray();
+
+        for(int i = 0,j = values.length-1; i &lt;= values.length/2; i++,j--){
+            if(values[i] != values[j]){
+                System.out.println(&quot;false&quot;);
+                return;
+            }
+        }
+
+        System.out.println(&quot;true&quot;);
+        return;
+    }
+
+
+    //将给定字符串右位移x个位置
+    //例如，(&quot;helloworld&quot;, 2)----&gt;&quot;ldhellowor&quot;
+    //思路：将String按照要移动的位数分成两个子串，再将两个子串反向连接
+    //注意：如果要右移的位数超过本身字符串长度要取模处理
+    //     在拆分子串的时候注意边界问题
+    public static void m4(String str, int x){
+        int realMove = x%str.length();
+
+        String subString1 = str.substring(str.length() - realMove);
+        String subString2 = str.substring(0, str.length() - realMove);//左闭右开
+
+        subString1 = subString1.concat(subString2);
+
+        System.out.println(subString1);
+    }
+
+
+    //寻找若干字符串中最长的那一个
+    //例如，&quot;abc,abcd,ab&quot;---&gt;&quot;abcd&quot;
+    //思路：将字符串按照逗号分隔，然后逐个比长度
+    public static void m5(String str){
+        String[] values = str.split(&quot;,&quot;);
+
+        int maxLengh = 0;
+        for(int i = 0; i &lt; values.length; i++){
+            if(values[i].length() &gt; values[maxLengh].length()){
+                maxLengh = i;
+            }
+        }
+
+        System.out.println(values[maxLengh]);
+    }
+
+
+    //统计一个字符串中某个字符出现的次数
+    public static void m6(String str, char letter){
+        int count = 0;
+
+        for(int i = 0; i &lt; str.length(); i++){
+            if(str.charAt(i) == letter){
+                count++;
+            }
+        }
+
+        System.out.println(count);
+    }
+    //第二种方法，用空字符串替换源字符串中的目标字母，然后比较两个字符串的长度
+    public static void m61(String str, char letter){
+        System.out.println(str.length() - str.replace(String.valueOf(letter), &quot;&quot;).length());
+    }
+
+
+    //将一个字符串中每一个单词首字母大写
+    //思路：先按照空格将源字符串分割成一个个部分，把这个部分分成第一个字母和其他字母，将第一个字母大写
+    //     拼回去成一个单词，最后再连起来
+    //注意：toUpperCase()只能将全部小写变大写
+    public static void m7(String str){
+        String result = &quot;&quot;;
+        String[] values = str.split(&quot; &quot;);
+
+        for(int i = 0; i &lt; values.length; i++){
+            String firstLetter = values[i].substring(0, 1).toUpperCase();//左闭右开
+            String otherLetters = values[i].substring(1);
+
+            String word = firstLetter.concat(otherLetters);
+            result = result.concat(word + &quot; &quot;);
+        }
+
+        System.out.println(result.trim());//去掉最后的空格
+    }
+
+
+    //获取字符串中全部数字
+    //思路：判断每一个字符是否是数字字符，然后拼接一个新串
+    public static void m8(String str){
+        String result = &quot;&quot;;
+
+        for(int i = 0; i &lt; str.length(); i++){
+            if(str.charAt(i) &gt;= &apos;0&apos; &amp;&amp; str.charAt(i) &lt;= &apos;9&apos;)
+                result = result.concat(str.charAt(i)+&quot;&quot;);
+        }
+
+        System.out.println(Integer.parseInt(result));//以数字返回
+    }
+
+}</code></pre>]]></content>
+      <tags>
+        <tag>String</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>单例模式</title>
+    <url>/blog09.html</url>
+    <content><![CDATA[<p>单例模式</p>
+<a id="more"></a>
+<h3 id="单例模式之懒汉式与饿汉式"><a href="#单例模式之懒汉式与饿汉式" class="headerlink" title="单例模式之懒汉式与饿汉式"></a>单例模式之懒汉式与饿汉式</h3><h4 id="懒汉式"><a href="#懒汉式" class="headerlink" title="懒汉式"></a>懒汉式</h4><pre><code>//懒汉式：用时才创建对象
+public class Singleton{
+
+    private Singleton(){}
+
+    private static Singleton singleton;
+
+    public Singleton getSingleton(){
+        if(singleton == null){
+            singleton = new Singleton();
+        }
+        return singleton;
+    }
+
+}</code></pre><h4 id="饿汉式"><a href="#饿汉式" class="headerlink" title="饿汉式"></a>饿汉式</h4><pre><code>//饿汉式：类一旦加载就产生对象，可能会造成服务器压力问题
+public class Singleton {
+
+    //构造方法私有，不让外界获取
+    private Singleton(){}
+
+    //只给外界提供一个对象，并保护对象安全
+    private static Singleton singleton;
+
+    public Singleton getSingleton(){
+        return singleton;
+    }
+
+}</code></pre>]]></content>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Functional Programming And Lambda Expressions in Java SE</title>
     <url>/blog08.html</url>
     <content><![CDATA[<p>Functional Interfaces And Lambda Expressions in Java SE</p>
@@ -649,91 +881,101 @@ public class ShoppingCart {
       </tags>
   </entry>
   <entry>
-    <title>Application of Exception, Multithreading in Java SE</title>
-    <url>/blog02.html</url>
-    <content><![CDATA[<p>Application of Exception, Multithreading in Java SE</p>
+    <title>Application of Exception, IO and recursion in Java SE</title>
+    <url>/blog01.html</url>
+    <content><![CDATA[<p>Application of Exception, IO and recursion in Java SE</p>
 <a id="more"></a>
-<h3 id="双线程交替输出1，2，3，4…"><a href="#双线程交替输出1，2，3，4…" class="headerlink" title="双线程交替输出1，2，3，4…"></a>双线程交替输出1，2，3，4…</h3><h4 id="Number-java"><a href="#Number-java" class="headerlink" title="Number.java"></a>Number.java</h4><pre><code>public class Number {
+<h3 id="查找一个目录下所有子路径和子文件："><a href="#查找一个目录下所有子路径和子文件：" class="headerlink" title="查找一个目录下所有子路径和子文件："></a>查找一个目录下所有子路径和子文件：</h3><pre><code>import java.io.*;
 
-    int number;
+public class SeekFiles {
 
-    public Number(int number) {
-        this.number = number;
+    public static void main(String[] args) {
+
+        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
+        SeekFiles.seekFiles(file);
+
     }
 
-    public synchronized void printOdd() {
-        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t1执行
-        this.notifyAll();//把t2唤醒，此时t2没有对象锁，处于就绪状态
-        try {
-            Thread.sleep(1000);
-            this.wait();//1s后，将t1睡眠，t1归还对象锁，t2获取对象锁
-        }catch(Exception e) {
-            e.printStackTrace();
+    public static void seekFiles(File file) {
+
+        if(file.isFile()) {
+            return ;
         }
-    }
 
-    public synchronized void printEven() {
-        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t2执行
-        this.notifyAll();//把t1唤醒，此时t1没有对象锁，处于就绪状态
-        try {
-            Thread.sleep(1000);
-            this.wait();//1s后，将t2睡眠，t2归还对象锁，t1获取对象锁
-        }catch(Exception e) {
-            e.printStackTrace();
+        File[] files = file.listFiles();
+        for(File subFile : files) {
+            System.out.println(subFile.getAbsolutePath());
+            seekFiles(subFile);
         }
+
     }
 
-}</code></pre><h4 id="PrintOdd-java"><a href="#PrintOdd-java" class="headerlink" title="PrintOdd.java"></a>PrintOdd.java</h4><pre><code>public class PrintOdd implements Runnable {
+}</code></pre><h3 id="批量复制文件："><a href="#批量复制文件：" class="headerlink" title="批量复制文件："></a>批量复制文件：</h3><pre><code>import java.io.*;
 
-    Number num;
+public class CopyFiles {
 
-    public PrintOdd(Number num) {
-        this.num = num;
+    public static void main(String[] args) {
+
+        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
+        CopyFiles.copyFile(file);
+
     }
 
-    public void run() {
-        while(true) {
-            this.num.printOdd();
+    public static void copyFile(File file) {
+
+        if(file.isFile()) {//判断是否为文件，不是就是路径
+            String filePath = file.getAbsolutePath();
+            String newFilePath = &quot;C&quot;+filePath.substring(1);
+            File parentFile = new File(newFilePath).getParentFile();
+            if(!parentFile.exists()) {//判断父路径是否存在
+                parentFile.mkdirs();
+            }
+
+            FileInputStream fis = null;
+            FileOutputStream fos = null;
+
+            try {
+                fis = new FileInputStream(filePath);
+                fos = new FileOutputStream(newFilePath);
+
+                byte[] bytes = new byte[1024000];//每次拷贝100kb
+                int temp = 0;
+                while((temp=fis.read(bytes)) != -1){
+                    fos.write(bytes, 0, temp);
+                }
+
+                fos.flush();
+            }catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                if(fis != null) {
+                    try {
+                        fis.close();
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(fos != null) {
+                    try {
+                        fos.close();
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return ;
         }
-    }
 
-}</code></pre><h4 id="PrintEven-java"><a href="#PrintEven-java" class="headerlink" title="PrintEven.java"></a>PrintEven.java</h4><pre><code>public class PrintEven implements Runnable{
-
-    Number num;
-
-    public PrintEven(Number num) {
-        this.num = num;
-    }
-
-    public void run() {
-        while(true) {
-            this.num.printEven();
+        File[] files = file.listFiles();
+        for(File subFile : files) {
+            copyFile(subFile);
         }
-    }
-
-}</code></pre><h4 id="Test-java"><a href="#Test-java" class="headerlink" title="Test.java"></a>Test.java</h4><pre><code>public class Text {
-
-    public static void main(String[] args) throws Exception {
-
-        Number num = new Number(1);
-
-        Thread t1 = new Thread(new PrintOdd(num));//双线程共享同一数据
-        t1.setName(&quot;t1&quot;);
-
-        Thread t2 = new Thread(new PrintEven(num));
-        t2.setName(&quot;t2&quot;);
-
-        t1.start();//让t1先执行
-
-        Thread.sleep(1000);
-
-        t2.start();
 
     }
 
 }</code></pre>]]></content>
       <tags>
-        <tag>Exception/Thread</tag>
+        <tag>IO/Exception/recursion</tag>
       </tags>
   </entry>
   <entry>
@@ -1012,101 +1254,91 @@ password=13013005866</code></pre>]]></content>
       </tags>
   </entry>
   <entry>
-    <title>Application of Exception, IO and recursion in Java SE</title>
-    <url>/blog01.html</url>
-    <content><![CDATA[<p>Application of Exception, IO and recursion in Java SE</p>
+    <title>Application of Exception, Multithreading in Java SE</title>
+    <url>/blog02.html</url>
+    <content><![CDATA[<p>Application of Exception, Multithreading in Java SE</p>
 <a id="more"></a>
-<h3 id="查找一个目录下所有子路径和子文件："><a href="#查找一个目录下所有子路径和子文件：" class="headerlink" title="查找一个目录下所有子路径和子文件："></a>查找一个目录下所有子路径和子文件：</h3><pre><code>import java.io.*;
+<h3 id="双线程交替输出1，2，3，4…"><a href="#双线程交替输出1，2，3，4…" class="headerlink" title="双线程交替输出1，2，3，4…"></a>双线程交替输出1，2，3，4…</h3><h4 id="Number-java"><a href="#Number-java" class="headerlink" title="Number.java"></a>Number.java</h4><pre><code>public class Number {
 
-public class SeekFiles {
+    int number;
 
-    public static void main(String[] args) {
-
-        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
-        SeekFiles.seekFiles(file);
-
+    public Number(int number) {
+        this.number = number;
     }
 
-    public static void seekFiles(File file) {
-
-        if(file.isFile()) {
-            return ;
+    public synchronized void printOdd() {
+        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t1执行
+        this.notifyAll();//把t2唤醒，此时t2没有对象锁，处于就绪状态
+        try {
+            Thread.sleep(1000);
+            this.wait();//1s后，将t1睡眠，t1归还对象锁，t2获取对象锁
+        }catch(Exception e) {
+            e.printStackTrace();
         }
-
-        File[] files = file.listFiles();
-        for(File subFile : files) {
-            System.out.println(subFile.getAbsolutePath());
-            seekFiles(subFile);
-        }
-
     }
 
-}</code></pre><h3 id="批量复制文件："><a href="#批量复制文件：" class="headerlink" title="批量复制文件："></a>批量复制文件：</h3><pre><code>import java.io.*;
-
-public class CopyFiles {
-
-    public static void main(String[] args) {
-
-        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
-        CopyFiles.copyFile(file);
-
+    public synchronized void printEven() {
+        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t2执行
+        this.notifyAll();//把t1唤醒，此时t1没有对象锁，处于就绪状态
+        try {
+            Thread.sleep(1000);
+            this.wait();//1s后，将t2睡眠，t2归还对象锁，t1获取对象锁
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void copyFile(File file) {
+}</code></pre><h4 id="PrintOdd-java"><a href="#PrintOdd-java" class="headerlink" title="PrintOdd.java"></a>PrintOdd.java</h4><pre><code>public class PrintOdd implements Runnable {
 
-        if(file.isFile()) {//判断是否为文件，不是就是路径
-            String filePath = file.getAbsolutePath();
-            String newFilePath = &quot;C&quot;+filePath.substring(1);
-            File parentFile = new File(newFilePath).getParentFile();
-            if(!parentFile.exists()) {//判断父路径是否存在
-                parentFile.mkdirs();
-            }
+    Number num;
 
-            FileInputStream fis = null;
-            FileOutputStream fos = null;
+    public PrintOdd(Number num) {
+        this.num = num;
+    }
 
-            try {
-                fis = new FileInputStream(filePath);
-                fos = new FileOutputStream(newFilePath);
-
-                byte[] bytes = new byte[1024000];//每次拷贝100kb
-                int temp = 0;
-                while((temp=fis.read(bytes)) != -1){
-                    fos.write(bytes, 0, temp);
-                }
-
-                fos.flush();
-            }catch (Exception e) {
-                e.printStackTrace();
-            }finally {
-                if(fis != null) {
-                    try {
-                        fis.close();
-                    }catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(fos != null) {
-                    try {
-                        fos.close();
-                    }catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            return ;
+    public void run() {
+        while(true) {
+            this.num.printOdd();
         }
+    }
 
-        File[] files = file.listFiles();
-        for(File subFile : files) {
-            copyFile(subFile);
+}</code></pre><h4 id="PrintEven-java"><a href="#PrintEven-java" class="headerlink" title="PrintEven.java"></a>PrintEven.java</h4><pre><code>public class PrintEven implements Runnable{
+
+    Number num;
+
+    public PrintEven(Number num) {
+        this.num = num;
+    }
+
+    public void run() {
+        while(true) {
+            this.num.printEven();
         }
+    }
+
+}</code></pre><h4 id="Test-java"><a href="#Test-java" class="headerlink" title="Test.java"></a>Test.java</h4><pre><code>public class Text {
+
+    public static void main(String[] args) throws Exception {
+
+        Number num = new Number(1);
+
+        Thread t1 = new Thread(new PrintOdd(num));//双线程共享同一数据
+        t1.setName(&quot;t1&quot;);
+
+        Thread t2 = new Thread(new PrintEven(num));
+        t2.setName(&quot;t2&quot;);
+
+        t1.start();//让t1先执行
+
+        Thread.sleep(1000);
+
+        t2.start();
 
     }
 
 }</code></pre>]]></content>
       <tags>
-        <tag>IO/Exception/recursion</tag>
+        <tag>Exception/Thread</tag>
       </tags>
   </entry>
 </search>

@@ -254,6 +254,424 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog10.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DonnKeefer">
+      <meta itemprop="description" content="This is a technology blog!">
+      <meta itemprop="image" content="/images/003.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DonnKeefer">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/blog10.html" class="post-title-link" itemprop="url">String Operation Exercises</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-11 12:29:46 / 修改时间：12:31:23" itemprop="dateCreated datePublished" datetime="2019-12-11T12:29:46+08:00">2019-12-11</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/blog10.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blog10.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>3.7k</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>3 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <pre><code>public class Test {
+
+    public static void main(String[] args) {
+        String str1 = &quot;ok&quot;;
+        Test.m1(str1);
+        Test.m11(str1);
+        Test.m111(str1);
+
+        Test.m2(str1);
+
+        String str2 = &quot;abccba&quot;;
+        String str3 = &quot;abcba&quot;;
+        Test.m3(str2);
+        Test.m3(str3);
+
+        String str4 = &quot;helloworld&quot;;
+        Test.m4(str4, 2);
+
+        String str5 = &quot;abc,abcd,ab&quot;;
+        Test.m5(str5);
+
+        String str6 = &quot;abcda&quot;;
+        Test.m6(str6, &apos;a&apos;);
+        Test.m61(str6, &apos;a&apos;);
+
+        String str7 = &quot;this is a bad gay&quot;;
+        Test.m7(str7);
+
+        String str8 = &quot;abc11ds32&quot;;
+        Test.m8(str8);
+    }
+
+
+    //字符串反转
+    //思路：拆成char[]，反向拼接
+    public static void m1(String str){
+        String resultStr = &quot;&quot;;
+        char[] values = str.toCharArray();
+
+        for(int i = values.length-1; i &gt;= 0; i--){
+            resultStr = resultStr.concat(values[i] + &quot;&quot;);
+        }
+
+        System.out.println(resultStr);
+    }
+    //第二种方法
+    public static void m11(String str){
+        char[] values = str.toCharArray();
+
+        for(int i = 0; i &lt; values.length/2; i++){
+            char temp = values[i];
+            values[i] = values[values.length-1-i];
+            values[values.length-1-i] = temp;
+        }
+
+        System.out.println(new String(values));
+    }
+    //第三种方法
+    public static void m111(String str){
+        System.out.println(new String(new StringBuffer(str).reverse()));
+    }
+
+
+    //字符串正序和反序进行连接
+    //思路：将目标字符串拆成char[]，正向拼接一次，反向拼接一次
+    public static void m2(String str){
+        String resultStr = &quot;&quot;;
+        char[] values = str.toCharArray();
+
+        for(int i = 0; i &lt; values.length; i++){
+            resultStr = resultStr.concat(values[i]+&quot;&quot;);//char转换成String才能拼接
+        }
+
+        for(int i = values.length-1; i &gt;= 0; i--){
+            resultStr = resultStr.concat(values[i]+&quot;&quot;);
+        }
+
+        System.out.println(resultStr);
+    }
+
+
+    //判断给定字符串是否是回文
+    //思路：String拆成char[]，首位各做一个标记，往中遍历
+    //注意：char[]有可能是双数，有可能是单数，如果循环条件是 i ！= j，双数的i，j永远不会相等
+    //     比如判断abcba，i要走到1，j走到3，最后都遍历到2，循环跳出
+    //     如果判断abccba，i要走到2，j要走到3，永不会碰到
+    //     所以，把握住i和j是同时移动的，只看一边就行，在abcba中，如果i走到2还没报错，那String就一定是回文
+    public static void m3(String str){
+        char[] values = str.toCharArray();
+
+        for(int i = 0,j = values.length-1; i &lt;= values.length/2; i++,j--){
+            if(values[i] != values[j]){
+                System.out.println(&quot;false&quot;);
+                return;
+            }
+        }
+
+        System.out.println(&quot;true&quot;);
+        return;
+    }
+
+
+    //将给定字符串右位移x个位置
+    //例如，(&quot;helloworld&quot;, 2)----&gt;&quot;ldhellowor&quot;
+    //思路：将String按照要移动的位数分成两个子串，再将两个子串反向连接
+    //注意：如果要右移的位数超过本身字符串长度要取模处理
+    //     在拆分子串的时候注意边界问题
+    public static void m4(String str, int x){
+        int realMove = x%str.length();
+
+        String subString1 = str.substring(str.length() - realMove);
+        String subString2 = str.substring(0, str.length() - realMove);//左闭右开
+
+        subString1 = subString1.concat(subString2);
+
+        System.out.println(subString1);
+    }
+
+
+    //寻找若干字符串中最长的那一个
+    //例如，&quot;abc,abcd,ab&quot;---&gt;&quot;abcd&quot;
+    //思路：将字符串按照逗号分隔，然后逐个比长度
+    public static void m5(String str){
+        String[] values = str.split(&quot;,&quot;);
+
+        int maxLengh = 0;
+        for(int i = 0; i &lt; values.length; i++){
+            if(values[i].length() &gt; values[maxLengh].length()){
+                maxLengh = i;
+            }
+        }
+
+        System.out.println(values[maxLengh]);
+    }
+
+
+    //统计一个字符串中某个字符出现的次数
+    public static void m6(String str, char letter){
+        int count = 0;
+
+        for(int i = 0; i &lt; str.length(); i++){
+            if(str.charAt(i) == letter){
+                count++;
+            }
+        }
+
+        System.out.println(count);
+    }
+    //第二种方法，用空字符串替换源字符串中的目标字母，然后比较两个字符串的长度
+    public static void m61(String str, char letter){
+        System.out.println(str.length() - str.replace(String.valueOf(letter), &quot;&quot;).length());
+    }
+
+
+    //将一个字符串中每一个单词首字母大写
+    //思路：先按照空格将源字符串分割成一个个部分，把这个部分分成第一个字母和其他字母，将第一个字母大写
+    //     拼回去成一个单词，最后再连起来
+    //注意：toUpperCase()只能将全部小写变大写
+    public static void m7(String str){
+        String result = &quot;&quot;;
+        String[] values = str.split(&quot; &quot;);
+
+        for(int i = 0; i &lt; values.length; i++){
+            String firstLetter = values[i].substring(0, 1).toUpperCase();//左闭右开
+            String otherLetters = values[i].substring(1);
+
+            String word = firstLetter.concat(otherLetters);
+            result = result.concat(word + &quot; &quot;);
+        }
+
+        System.out.println(result.trim());//去掉最后的空格
+    }
+
+
+    //获取字符串中全部数字
+    //思路：判断每一个字符是否是数字字符，然后拼接一个新串
+    public static void m8(String str){
+        String result = &quot;&quot;;
+
+        for(int i = 0; i &lt; str.length(); i++){
+            if(str.charAt(i) &gt;= &apos;0&apos; &amp;&amp; str.charAt(i) &lt;= &apos;9&apos;)
+                result = result.concat(str.charAt(i)+&quot;&quot;);
+        }
+
+        System.out.println(Integer.parseInt(result));//以数字返回
+    }
+
+}</code></pre>
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog09.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DonnKeefer">
+      <meta itemprop="description" content="This is a technology blog!">
+      <meta itemprop="image" content="/images/003.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DonnKeefer">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/blog09.html" class="post-title-link" itemprop="url">单例模式</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-05 23:22:46" itemprop="dateCreated datePublished" datetime="2019-12-05T23:22:46+08:00">2019-12-05</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-11 12:26:38" itemprop="dateModified" datetime="2019-12-11T12:26:38+08:00">2019-12-11</time>
+              </span>
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/blog09.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blog09.html" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span>387</span>
+            </span>
+          
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              
+              <span>1 分钟</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>单例模式</p>
+          <!--noindex-->
+          
+            <div class="post-button">
+              <a class="btn" href="/blog09.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog08.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -742,7 +1160,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog02.html">
+    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog01.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="DonnKeefer">
@@ -756,7 +1174,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
             
-            <a href="/blog02.html" class="post-title-link" itemprop="url">Application of Exception, Multithreading in Java SE</a>
+            <a href="/blog01.html" class="post-title-link" itemprop="url">Application of Exception, IO and recursion in Java SE</a>
           
         </h1>
 
@@ -782,7 +1200,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-07 10:43:34" itemprop="dateModified" datetime="2019-11-07T10:43:34+08:00">2019-11-07</time>
+                <time title="修改时间：2019-11-17 23:34:32" itemprop="dateModified" datetime="2019-11-17T23:34:32+08:00">2019-11-17</time>
               </span>
             
           
@@ -798,7 +1216,7 @@
       
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/blog02.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blog02.html" itemprop="commentCount"></span></a>
+    <a title="valine" href="/blog01.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blog01.html" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -810,7 +1228,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>1.3k</span>
+              <span>1.4k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -833,11 +1251,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Application of Exception, Multithreading in Java SE</p>
+          <p>Application of Exception, IO and recursion in Java SE</p>
           <!--noindex-->
           
             <div class="post-button">
-              <a class="btn" href="/blog02.html#more" rel="contents">
+              <a class="btn" href="/blog01.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -990,7 +1408,7 @@
   
   
   <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog01.html">
+    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog02.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="DonnKeefer">
@@ -1004,7 +1422,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
             
-            <a href="/blog01.html" class="post-title-link" itemprop="url">Application of Exception, IO and recursion in Java SE</a>
+            <a href="/blog02.html" class="post-title-link" itemprop="url">Application of Exception, Multithreading in Java SE</a>
           
         </h1>
 
@@ -1030,7 +1448,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-17 23:34:32" itemprop="dateModified" datetime="2019-11-17T23:34:32+08:00">2019-11-17</time>
+                <time title="修改时间：2019-11-07 10:43:34" itemprop="dateModified" datetime="2019-11-07T10:43:34+08:00">2019-11-07</time>
               </span>
             
           
@@ -1046,7 +1464,7 @@
       
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/blog01.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blog01.html" itemprop="commentCount"></span></a>
+    <a title="valine" href="/blog02.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blog02.html" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -1058,7 +1476,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>1.4k</span>
+              <span>1.3k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -1081,11 +1499,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Application of Exception, IO and recursion in Java SE</p>
+          <p>Application of Exception, Multithreading in Java SE</p>
           <!--noindex-->
           
             <div class="post-button">
-              <a class="btn" href="/blog01.html#more" rel="contents">
+              <a class="btn" href="/blog02.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1159,7 +1577,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1172,7 +1590,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">标签</span>
         </a>
       </div>
@@ -1239,12 +1657,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">19k</span>
+    <span title="站点总字数">23k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">17 分钟</span>
+    <span title="站点阅读时长">21 分钟</span>
 </div>
 
         
