@@ -58,19 +58,19 @@
   };
 </script>
 
-  <meta name="description" content="Functional Interfaces And Lambda Expressions in Java SE">
-<meta name="keywords" content="Lambda&#x2F;Functional Interface&#x2F;Thread">
+  <meta name="description" content="HashMap And HashSet Complete The Login Function">
+<meta name="keywords" content="Collection&#x2F;Map">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Functional Programming And Lambda Expressions in Java SE">
-<meta property="og:url" content="https://DonnKeefer.github.io/blog08.html">
+<meta property="og:title" content="HashMap And HashSet Complete The Login Function">
+<meta property="og:url" content="https://DonnKeefer.github.io/blog11.html">
 <meta property="og:site_name" content="DonnKeefer">
-<meta property="og:description" content="Functional Interfaces And Lambda Expressions in Java SE">
+<meta property="og:description" content="HashMap And HashSet Complete The Login Function">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-17T15:31:51.169Z">
+<meta property="og:updated_time" content="2019-12-16T07:40:14.741Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Functional Programming And Lambda Expressions in Java SE">
-<meta name="twitter:description" content="Functional Interfaces And Lambda Expressions in Java SE">
-  <link rel="canonical" href="https://DonnKeefer.github.io/blog08">
+<meta name="twitter:title" content="HashMap And HashSet Complete The Login Function">
+<meta name="twitter:description" content="HashMap And HashSet Complete The Login Function">
+  <link rel="canonical" href="https://DonnKeefer.github.io/blog11">
 
 
 <script id="page-configurations">
@@ -84,7 +84,7 @@
   };
 </script>
 
-  <title>Functional Programming And Lambda Expressions in Java SE | DonnKeefer</title>
+  <title>HashMap And HashSet Complete The Login Function | DonnKeefer</title>
   
 
 
@@ -256,7 +256,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog08.html">
+    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog11.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="DonnKeefer">
@@ -268,7 +268,7 @@
       <meta itemprop="name" content="DonnKeefer">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">Functional Programming And Lambda Expressions in Java SE
+        <h1 class="post-title" itemprop="name headline">HashMap And HashSet Complete The Login Function
 
           
         </h1>
@@ -284,7 +284,7 @@
                 
               
 
-              <time title="创建时间：2019-11-17 23:22:46 / 修改时间：23:31:51" itemprop="dateCreated datePublished" datetime="2019-11-17T23:22:46+08:00">2019-11-17</time>
+              <time title="创建时间：2019-12-16 15:37:46 / 修改时间：15:40:14" itemprop="dateCreated datePublished" datetime="2019-12-16T15:37:46+08:00">2019-12-16</time>
             </span>
           
             
@@ -311,7 +311,7 @@
       
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/blog08.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blog08.html" itemprop="commentCount"></span></a>
+    <a title="valine" href="/blog11.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blog11.html" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -323,7 +323,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>1.3k</span>
+              <span>1.4k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -346,71 +346,71 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Functional Interfaces And Lambda Expressions in Java SE</p>
+        <p>HashMap And HashSet Complete The Login Function</p>
 <a id="more"></a>
-<h3 id="函数式接口和Lambda表达式的使用"><a href="#函数式接口和Lambda表达式的使用" class="headerlink" title="函数式接口和Lambda表达式的使用"></a>函数式接口和Lambda表达式的使用</h3><h4 id="函数式接口作参数"><a href="#函数式接口作参数" class="headerlink" title="函数式接口作参数"></a>函数式接口作参数</h4><pre><code>public class demo01 {
+<h3 id="利用HashMap和HashSet分别完成登录功能"><a href="#利用HashMap和HashSet分别完成登录功能" class="headerlink" title="利用HashMap和HashSet分别完成登录功能"></a>利用HashMap和HashSet分别完成登录功能</h3><pre><code>import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 
-    public static void startThread(Runnable runnable){
-        Thread thread = new Thread(runnable);
-        thread.start();
+public class Login {
+
+    //使用HashSet完成登录功能
+    private HashSet&lt;String&gt; userBox1 = new HashSet&lt;&gt;();
+
+    {
+        userBox1.add(&quot;张三-123&quot;);
+        userBox1.add(&quot;李四-666&quot;);
+        userBox1.add(&quot;王五-342&quot;);
     }
 
-    public static void main(String[] args) {
-
-        //传统匿名内部类做为参数
-        demo01.startThread(new Runnable(){
-            @Override
-            public void run() {
-                System.out.println(Thread.currentThread().getName()+&quot;---&gt;&quot;+&quot;已启动&quot;);
-            }
-        });
-
-        //lambda表达式做参数
-        demo01.startThread(()-&gt;{
-            System.out.println(Thread.currentThread().getName()+&quot;---&gt;&quot;+&quot;已启动&quot;);
-        });
-
-        //优化过后的lambda表达式做参数
-        demo01.startThread(()-&gt; System.out.println(Thread.currentThread().getName()+&quot;---&gt;&quot;+&quot;已启动&quot;));
-
-    }
-
-}</code></pre><h4 id="函数式接口作返回值"><a href="#函数式接口作返回值" class="headerlink" title="函数式接口作返回值"></a>函数式接口作返回值</h4><pre><code>//函数式接口做返回值
-public class demo02 {
-
-    //比较器的实现
-    public static Comparator&lt;String&gt; getComparator(){
-
-        //匿名内部类实现接口
-//        return new Comparator&lt;String&gt;() {
-//            @Override
-//            public int compare(String o1, String o2) {
-//                return o1-o2;
+    public String login1(String userName, String password){
+        //使用增强for循环遍历
+//        for(String e : userBox){
+//            String[] user = e.split(&quot;-&quot;);
+//            if(user[0].equals(userName)){
+//                if(user[1].equals(password)){
+//                    return &quot;登录成功&quot;;
+//                }
+//                break;
 //            }
 //        }
-
-        //lambda表达式实现接口
-//        return (String o1, String o2)-&gt;{
-//            //字符串长度升序排序
-//            return o1.length()-o2.length();
-//        };
-
-        //优化lambda表达式
-        //字符串长度降序排序
-        return (o1, o2)-&gt;o2.length()-o1.length();
-
+        //使用迭代器遍历
+        Iterator&lt;String&gt; iterator = userBox1.iterator();
+        while(iterator.hasNext()){
+            String[] user = iterator.next().split(&quot;-&quot;);
+            if(user[0].equals(userName)){
+                if(user[1].equals(password)){
+                    return &quot;登录成功&quot;;
+                }
+                break;
+            }
+        }
+        return &quot;登录失败&quot;;
     }
 
-    public static void main(String[] args) {
 
-        String[] strings = {&quot;aaa&quot;, &quot;bbbb&quot;, &quot;ccccc&quot;};
+    //使用HashMap完成登录
+    private HashMap&lt;String, String&gt; userBox2 = new HashMap&lt;&gt;();
 
-        //调用Arrays中sort方法对字符串数组进行排序，需要提供比较器
-        Arrays.sort(strings, demo02.getComparator());
+    {
+        userBox2.put(&quot;张三&quot;, &quot;123&quot;);
+        userBox2.put(&quot;李四&quot;, &quot;666&quot;);
+        userBox2.put(&quot;王五&quot;, &quot;342&quot;);
+    }
 
-        //调用Arrays中toString输出字符串数组
-        System.out.println(Arrays.toString(strings));
+    //不在需要循环遍历查找，直接定位更快速
+    public String login2(String userName, String userPassword){
+        String password = userBox2.get(userName);
+        if(password.equals(userPassword)){
+            return &quot;登录成功&quot;;
+        }else{
+            return &quot;登录失败&quot;;
+        }
+    }
 
+    public static void main(String[] args){
+        Login login = new Login();
+        System.out.println(login.login2(&quot;张三&quot;, &quot;123&quot;));
     }
 
 }</code></pre>
@@ -451,7 +451,7 @@ public class demo02 {
           
           <div class="post-tags">
             
-              <a href="/tags/Lambda-Functional-Interface-Thread/" rel="tag"># Lambda/Functional Interface/Thread</a>
+              <a href="/tags/Collection-Map/" rel="tag"># Collection/Map</a>
             
           </div>
         
@@ -461,8 +461,8 @@ public class demo02 {
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
-                <a href="/blog07.html" rel="next" title="C/S Development Mode in Java SE Network programming">
-                  <i class="fa fa-chevron-left"></i> C/S Development Mode in Java SE Network programming
+                <a href="/blog10.html" rel="next" title="String Operation Exercises">
+                  <i class="fa fa-chevron-left"></i> String Operation Exercises
                 </a>
               
             </div>
@@ -470,10 +470,6 @@ public class demo02 {
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/blog09.html" rel="prev" title="单例模式">
-                  单例模式 <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -525,7 +521,7 @@ public class demo02 {
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数式接口和Lambda表达式的使用"><span class="nav-number">1.</span> <span class="nav-text">函数式接口和Lambda表达式的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数式接口作参数"><span class="nav-number">1.1.</span> <span class="nav-text">函数式接口作参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数式接口作返回值"><span class="nav-number">1.2.</span> <span class="nav-text">函数式接口作返回值</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#利用HashMap和HashSet分别完成登录功能"><span class="nav-number">1.</span> <span class="nav-text">利用HashMap和HashSet分别完成登录功能</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
