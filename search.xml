@@ -76,6 +76,149 @@ public class Login {
       </tags>
   </entry>
   <entry>
+    <title>Simple Examination System</title>
+    <url>/blog12.html</url>
+    <content><![CDATA[<p>Simple Examination System</p>
+<a id="more"></a>
+<h3 id="完成一个简易的考试系统"><a href="#完成一个简易的考试系统" class="headerlink" title="完成一个简易的考试系统"></a>完成一个简易的考试系统</h3><h4 id="Student-java"><a href="#Student-java" class="headerlink" title="Student.java"></a>Student.java</h4><pre><code>public class Student {
+
+    private String userName;
+    private String password;
+
+    public Student(String userName, String password){
+        this.userName = userName;
+        this.password = password;
+    }
+
+    public String getUserName(){
+        return this.userName;
+    }
+
+    public String getPassword(){
+        return this.password;
+    }
+
+}</code></pre><h4 id="Teacher-java"><a href="#Teacher-java" class="headerlink" title="Teacher.java"></a>Teacher.java</h4><pre><code>public class Student {
+
+    private String userName;
+    private String password;
+
+    public Student(String userName, String password){
+        this.userName = userName;
+        this.password = password;
+    }
+
+    public String getUserName(){
+        return this.userName;
+    }
+
+    public String getPassword(){
+        return this.password;
+    }
+
+}</code></pre><h4 id="ExamMachine-java"><a href="#ExamMachine-java" class="headerlink" title="ExamMachine.java"></a>ExamMachine.java</h4><pre><code>import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Random;
+
+public class ExamMachine {
+
+    private HashMap&lt;String, String&gt; userBox = new HashMap&lt;String, String&gt;();
+    {
+        userBox.put(&quot;张三&quot;, &quot;123&quot;);
+        userBox.put(&quot;李四&quot;, &quot;222&quot;);
+        userBox.put(&quot;王五&quot;, &quot;333&quot;);
+    }
+
+    private HashSet&lt;Question&gt; paperBank = new HashSet&lt;Question&gt;();
+    {
+        paperBank.add(new Question(&quot;第一道题&quot;,&quot;a&quot;));
+        paperBank.add(new Question(&quot;第二道题&quot;,&quot;a&quot;));
+        paperBank.add(new Question(&quot;第三道题&quot;,&quot;a&quot;));
+        paperBank.add(new Question(&quot;第四道题&quot;,&quot;a&quot;));
+        paperBank.add(new Question(&quot;第五道题&quot;,&quot;a&quot;));
+        paperBank.add(new Question(&quot;第六道题&quot;,&quot;a&quot;));
+        paperBank.add(new Question(&quot;第七道题&quot;,&quot;a&quot;));
+    }
+
+    //生成试卷
+    //数据选择使用ArrayList存储
+    public ArrayList&lt;Question&gt; getPaper(int size){
+        //防止重复题构建的临时试卷
+        HashSet&lt;Question&gt; paper = new HashSet&lt;Question&gt;(size);
+        //将题库暂存到可以随机抽题的缓存中
+        ArrayList&lt;Question&gt; paperBank = new ArrayList&lt;Question&gt;(this.paperBank);
+        while(paper.size() != size){
+            //抽题号
+            int index = new Random().nextInt(paperBank.size());
+            paper.add(paperBank.get(index));
+        }
+        //将临时试卷转成最终ArrayList形式
+        return new ArrayList&lt;Question&gt; (paper);
+    }
+
+    public String login(Student student){
+        String userName = student.getUserName();
+        String password = student.getPassword();
+        if(userName != null &amp;&amp; userBox.get(userName).equals(password)){
+            return &quot;登录成功&quot;;
+        }
+        return &quot;用户名或密码错误！&quot;;
+    }
+
+    public String[] answerQustion(ArrayList&lt;Question&gt; paper){
+        //效果
+        System.out.println(&quot;正在加载试题，请稍后！&quot;);
+        try{
+            Thread.sleep(3000);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        java.util.Scanner input = new java.util.Scanner(System.in);
+        int index = 0;
+        String[] answers = new String[paper.size()];
+        while(index != paper.size()){
+            System.out.println((index+1) + paper.get(index).getTitle());
+            System.out.print(&quot;请输入您的答案：&quot;);
+            answers[index++] = input.nextLine();
+        }
+        return answers;
+    }
+
+}</code></pre><h4 id="Test-java"><a href="#Test-java" class="headerlink" title="Test.java"></a>Test.java</h4><pre><code>import java.util.ArrayList;
+
+public class Test {
+
+    public static void main(String[] args){
+        ExamMachine examMachine = new ExamMachine();
+
+        java.util.Scanner input = new java.util.Scanner(System.in);
+        System.out.println(&quot;请输入用户名：&quot;);
+        String userName = input.nextLine();
+        System.out.println(&quot;请输入密码：&quot;);
+        String password = input.nextLine();
+        Student student = new Student(userName, password);
+
+        //模拟学生登录
+        String result = examMachine.login(student);
+        if(result.equals(&quot;登录成功&quot;)){
+            //生成试卷
+            ArrayList&lt;Question&gt; paper = examMachine.getPaper(5);
+            //学生答题
+            String[] answers = examMachine.answerQustion(paper);
+            //老师阅卷
+            Teacher teacher = new Teacher();
+            System.out.println(&quot;您本次考试成绩位：&quot; +  teacher.checkPaper(paper, answers));
+        }
+    }
+
+}</code></pre>]]></content>
+      <tags>
+        <tag>Collection/Thread</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>String Operation Exercises</title>
     <url>/blog10.html</url>
     <content><![CDATA[<p>字符串操作练习</p>
@@ -958,94 +1101,6 @@ public class ShoppingCart {
       </tags>
   </entry>
   <entry>
-    <title>Application of Exception, Multithreading in Java SE</title>
-    <url>/blog02.html</url>
-    <content><![CDATA[<p>Application of Exception, Multithreading in Java SE</p>
-<a id="more"></a>
-<h3 id="双线程交替输出1，2，3，4…"><a href="#双线程交替输出1，2，3，4…" class="headerlink" title="双线程交替输出1，2，3，4…"></a>双线程交替输出1，2，3，4…</h3><h4 id="Number-java"><a href="#Number-java" class="headerlink" title="Number.java"></a>Number.java</h4><pre><code>public class Number {
-
-    int number;
-
-    public Number(int number) {
-        this.number = number;
-    }
-
-    public synchronized void printOdd() {
-        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t1执行
-        this.notifyAll();//把t2唤醒，此时t2没有对象锁，处于就绪状态
-        try {
-            Thread.sleep(1000);
-            this.wait();//1s后，将t1睡眠，t1归还对象锁，t2获取对象锁
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public synchronized void printEven() {
-        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t2执行
-        this.notifyAll();//把t1唤醒，此时t1没有对象锁，处于就绪状态
-        try {
-            Thread.sleep(1000);
-            this.wait();//1s后，将t2睡眠，t2归还对象锁，t1获取对象锁
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-}</code></pre><h4 id="PrintOdd-java"><a href="#PrintOdd-java" class="headerlink" title="PrintOdd.java"></a>PrintOdd.java</h4><pre><code>public class PrintOdd implements Runnable {
-
-    Number num;
-
-    public PrintOdd(Number num) {
-        this.num = num;
-    }
-
-    public void run() {
-        while(true) {
-            this.num.printOdd();
-        }
-    }
-
-}</code></pre><h4 id="PrintEven-java"><a href="#PrintEven-java" class="headerlink" title="PrintEven.java"></a>PrintEven.java</h4><pre><code>public class PrintEven implements Runnable{
-
-    Number num;
-
-    public PrintEven(Number num) {
-        this.num = num;
-    }
-
-    public void run() {
-        while(true) {
-            this.num.printEven();
-        }
-    }
-
-}</code></pre><h4 id="Test-java"><a href="#Test-java" class="headerlink" title="Test.java"></a>Test.java</h4><pre><code>public class Text {
-
-    public static void main(String[] args) throws Exception {
-
-        Number num = new Number(1);
-
-        Thread t1 = new Thread(new PrintOdd(num));//双线程共享同一数据
-        t1.setName(&quot;t1&quot;);
-
-        Thread t2 = new Thread(new PrintEven(num));
-        t2.setName(&quot;t2&quot;);
-
-        t1.start();//让t1先执行
-
-        Thread.sleep(1000);
-
-        t2.start();
-
-    }
-
-}</code></pre>]]></content>
-      <tags>
-        <tag>Exception/Thread</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Application of Exception, IO and recursion in Java SE</title>
     <url>/blog01.html</url>
     <content><![CDATA[<p>Application of Exception, IO and recursion in Java SE</p>
@@ -1416,6 +1471,94 @@ user=root
 password=13013005866</code></pre>]]></content>
       <tags>
         <tag>Reflaction/JDBC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Application of Exception, Multithreading in Java SE</title>
+    <url>/blog02.html</url>
+    <content><![CDATA[<p>Application of Exception, Multithreading in Java SE</p>
+<a id="more"></a>
+<h3 id="双线程交替输出1，2，3，4…"><a href="#双线程交替输出1，2，3，4…" class="headerlink" title="双线程交替输出1，2，3，4…"></a>双线程交替输出1，2，3，4…</h3><h4 id="Number-java"><a href="#Number-java" class="headerlink" title="Number.java"></a>Number.java</h4><pre><code>public class Number {
+
+    int number;
+
+    public Number(int number) {
+        this.number = number;
+    }
+
+    public synchronized void printOdd() {
+        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t1执行
+        this.notifyAll();//把t2唤醒，此时t2没有对象锁，处于就绪状态
+        try {
+            Thread.sleep(1000);
+            this.wait();//1s后，将t1睡眠，t1归还对象锁，t2获取对象锁
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized void printEven() {
+        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t2执行
+        this.notifyAll();//把t1唤醒，此时t1没有对象锁，处于就绪状态
+        try {
+            Thread.sleep(1000);
+            this.wait();//1s后，将t2睡眠，t2归还对象锁，t1获取对象锁
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+}</code></pre><h4 id="PrintOdd-java"><a href="#PrintOdd-java" class="headerlink" title="PrintOdd.java"></a>PrintOdd.java</h4><pre><code>public class PrintOdd implements Runnable {
+
+    Number num;
+
+    public PrintOdd(Number num) {
+        this.num = num;
+    }
+
+    public void run() {
+        while(true) {
+            this.num.printOdd();
+        }
+    }
+
+}</code></pre><h4 id="PrintEven-java"><a href="#PrintEven-java" class="headerlink" title="PrintEven.java"></a>PrintEven.java</h4><pre><code>public class PrintEven implements Runnable{
+
+    Number num;
+
+    public PrintEven(Number num) {
+        this.num = num;
+    }
+
+    public void run() {
+        while(true) {
+            this.num.printEven();
+        }
+    }
+
+}</code></pre><h4 id="Test-java"><a href="#Test-java" class="headerlink" title="Test.java"></a>Test.java</h4><pre><code>public class Text {
+
+    public static void main(String[] args) throws Exception {
+
+        Number num = new Number(1);
+
+        Thread t1 = new Thread(new PrintOdd(num));//双线程共享同一数据
+        t1.setName(&quot;t1&quot;);
+
+        Thread t2 = new Thread(new PrintEven(num));
+        t2.setName(&quot;t2&quot;);
+
+        t1.start();//让t1先执行
+
+        Thread.sleep(1000);
+
+        t2.start();
+
+    }
+
+}</code></pre>]]></content>
+      <tags>
+        <tag>Exception/Thread</tag>
       </tags>
   </entry>
 </search>
