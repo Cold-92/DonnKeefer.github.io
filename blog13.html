@@ -58,19 +58,19 @@
   };
 </script>
 
-  <meta name="description" content="Application of Exception, IO and recursion in Java SE">
-<meta name="keywords" content="IO&#x2F;Exception&#x2F;recursion">
+  <meta name="description" content="Person.javapublic class Person {      private String name;     private Integer age;      public Person(){}     public Person(String name, Integer age){         this.name = name;         this.age = ag">
+<meta name="keywords" content="IOC&#x2F;Spring&#x2F;Reflection">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Application of Exception, IO and recursion in Java SE">
-<meta property="og:url" content="https://DonnKeefer.github.io/blog01.html">
+<meta property="og:title" content="IOC控制反转和依赖注入">
+<meta property="og:url" content="https://DonnKeefer.github.io/blog13.html">
 <meta property="og:site_name" content="DonnKeefer">
-<meta property="og:description" content="Application of Exception, IO and recursion in Java SE">
+<meta property="og:description" content="Person.javapublic class Person {      private String name;     private Integer age;      public Person(){}     public Person(String name, Integer age){         this.name = name;         this.age = ag">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-17T15:34:32.941Z">
+<meta property="og:updated_time" content="2020-01-07T14:17:56.120Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Application of Exception, IO and recursion in Java SE">
-<meta name="twitter:description" content="Application of Exception, IO and recursion in Java SE">
-  <link rel="canonical" href="https://DonnKeefer.github.io/blog01">
+<meta name="twitter:title" content="IOC控制反转和依赖注入">
+<meta name="twitter:description" content="Person.javapublic class Person {      private String name;     private Integer age;      public Person(){}     public Person(String name, Integer age){         this.name = name;         this.age = ag">
+  <link rel="canonical" href="https://DonnKeefer.github.io/blog13">
 
 
 <script id="page-configurations">
@@ -84,7 +84,7 @@
   };
 </script>
 
-  <title>Application of Exception, IO and recursion in Java SE | DonnKeefer</title>
+  <title>IOC控制反转和依赖注入 | DonnKeefer</title>
   
 
 
@@ -256,7 +256,7 @@
   
   
   <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog01.html">
+    <link itemprop="mainEntityOfPage" href="https://DonnKeefer.github.io/blog13.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="DonnKeefer">
@@ -268,7 +268,7 @@
       <meta itemprop="name" content="DonnKeefer">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">Application of Exception, IO and recursion in Java SE
+        <h1 class="post-title" itemprop="name headline">IOC控制反转和依赖注入
 
           
         </h1>
@@ -284,19 +284,11 @@
                 
               
 
-              <time title="创建时间：2019-11-01 20:42:17" itemprop="dateCreated datePublished" datetime="2019-11-01T20:42:17+08:00">2019-11-01</time>
+              <time title="创建时间：2020-01-07 22:14:46 / 修改时间：22:17:56" itemprop="dateCreated datePublished" datetime="2020-01-07T22:14:46+08:00">2020-01-07</time>
             </span>
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-17 23:34:32" itemprop="dateModified" datetime="2019-11-17T23:34:32+08:00">2019-11-17</time>
-              </span>
             
           
 
@@ -319,7 +311,7 @@
       
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/blog01.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blog01.html" itemprop="commentCount"></span></a>
+    <a title="valine" href="/blog13.html#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/blog13.html" itemprop="commentCount"></span></a>
   </span>
   
   
@@ -331,7 +323,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span>1.4k</span>
+              <span>1.7k</span>
             </span>
           
             <span class="post-meta-item" title="阅读时长">
@@ -341,7 +333,7 @@
               
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
           
 
@@ -354,94 +346,79 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Application of Exception, IO and recursion in Java SE</p>
-<a id="more"></a>
-<h3 id="查找一个目录下所有子路径和子文件："><a href="#查找一个目录下所有子路径和子文件：" class="headerlink" title="查找一个目录下所有子路径和子文件："></a>查找一个目录下所有子路径和子文件：</h3><pre><code>import java.io.*;
+        <a id="more"></a>
+<h3 id="Person-java"><a href="#Person-java" class="headerlink" title="Person.java"></a>Person.java</h3><pre><code>public class Person {
 
-public class SeekFiles {
+    private String name;
+    private Integer age;
 
-    public static void main(String[] args) {
-
-        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
-        SeekFiles.seekFiles(file);
-
+    public Person(){}
+    public Person(String name, Integer age){
+        this.name = name;
+        this.age = age;
     }
 
-    public static void seekFiles(File file) {
-
-        if(file.isFile()) {
-            return ;
-        }
-
-        File[] files = file.listFiles();
-        for(File subFile : files) {
-            System.out.println(subFile.getAbsolutePath());
-            seekFiles(subFile);
-        }
-
+    public void setName(String name){
+        this.name = name;
+    }
+    public void setAge(Integer age){
+        this.age = age;
     }
 
-}</code></pre><h3 id="批量复制文件："><a href="#批量复制文件：" class="headerlink" title="批量复制文件："></a>批量复制文件：</h3><pre><code>import java.io.*;
-
-public class CopyFiles {
-
-    public static void main(String[] args) {
-
-        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
-        CopyFiles.copyFile(file);
-
+    public String toString(){
+        return &quot;{&quot;+this.name+&quot;,&quot;+this.age+&quot;}&quot;;
     }
 
-    public static void copyFile(File file) {
+}</code></pre><h3 id="MySpring-java"><a href="#MySpring-java" class="headerlink" title="MySpring.java"></a>MySpring.java</h3><pre><code>/*
+    利用IOC控制反转的思想，把Person类的创建交给MySpring类来创建，并赋值
+    思路：
+        先获取Person类
+        通过Person类创建Person对象
+        通过Person类获取所有属性
+        通过获取到的每个属性找到Person类中的set方法给每个属性赋值（值采用键盘输入）
+        同时考虑输入值的类型不同如何处理
+*/
 
-        if(file.isFile()) {//判断是否为文件，不是就是路径
-            String filePath = file.getAbsolutePath();
-            String newFilePath = &quot;C&quot;+filePath.substring(1);
-            File parentFile = new File(newFilePath).getParentFile();
-            if(!parentFile.exists()) {//判断父路径是否存在
-                parentFile.mkdirs();
-            }
+public class MySpring {
 
-            FileInputStream fis = null;
-            FileOutputStream fos = null;
-
-            try {
-                fis = new FileInputStream(filePath);
-                fos = new FileOutputStream(newFilePath);
-
-                byte[] bytes = new byte[1024000];//每次拷贝100kb
-                int temp = 0;
-                while((temp=fis.read(bytes)) != -1){
-                    fos.write(bytes, 0, temp);
-                }
-
-                fos.flush();
-            }catch (Exception e) {
-                e.printStackTrace();
-            }finally {
-                if(fis != null) {
-                    try {
-                        fis.close();
-                    }catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(fos != null) {
-                    try {
-                        fos.close();
-                    }catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            return ;
+    public Object getBean(String className) throws Exception {
+        Scanner scanner = new Scanner(System.in);
+        //获取类
+        Class clazz = Class.forName(className);
+        //创建未赋值的对象
+        Object object = clazz.newInstance();
+        //获取该类中所有属性
+        Field[] fields = clazz.getDeclaredFields();
+        //通过获取的属性解析属性名，找到对应set方法赋值
+        for(Field field : fields){
+            //拼添加属性的方法名
+            String firstLetter = field.getName().substring(0, 1).toUpperCase();
+            String otherLetter = field.getName().substring(1);
+            StringBuilder setMethod = new StringBuilder(&quot;set&quot;);
+            setMethod.append(firstLetter);
+            setMethod.append(otherLetter);
+            //手动添加属性值
+            System.out.println(&quot;请输入&quot;+field.getName()+&quot;:&quot;);
+            String value = scanner.nextLine();
+            //获取相对应的set方法,同时注意参数属性的问题
+            //因为包装类除了Char其他都有只有String的构造方法，所以可以通过获取到的构造
+            //方法把String转换为bean中相应的数据类型再作为参数传递给set方法调用
+            Class fieldClass = field.getType();
+            Constructor constructor = fieldClass.getConstructor(String.class);//（形参类型）
+            Method method = clazz.getMethod(setMethod.toString(), fieldClass);//（方法名，形参类型）
+            method.invoke(object, constructor.newInstance(value));//（对象，实参）
         }
 
-        File[] files = file.listFiles();
-        for(File subFile : files) {
-            copyFile(subFile);
-        }
+        System.out.println(object);
 
+        return object;
+    }
+
+}</code></pre><h3 id="TestMain-java"><a href="#TestMain-java" class="headerlink" title="TestMain.java"></a>TestMain.java</h3><pre><code>public class TestMain {
+
+    public static void main(String[] args) throws Exception {
+        MySpring mySpring = new MySpring();
+        mySpring.getBean(&quot;javaSE.reflection.Person&quot;);
     }
 
 }</code></pre>
@@ -482,7 +459,7 @@ public class CopyFiles {
           
           <div class="post-tags">
             
-              <a href="/tags/IO-Exception-recursion/" rel="tag"># IO/Exception/recursion</a>
+              <a href="/tags/IOC-Spring-Reflection/" rel="tag"># IOC/Spring/Reflection</a>
             
           </div>
         
@@ -492,15 +469,15 @@ public class CopyFiles {
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
               
+                <a href="/blog11.html" rel="next" title="HashMap And HashSet Complete The Login Function">
+                  <i class="fa fa-chevron-left"></i> HashMap And HashSet Complete The Login Function
+                </a>
+              
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-              
-                <a href="/blog02.html" rel="prev" title="Application of Exception, Multithreading in Java SE">
-                  Application of Exception, Multithreading in Java SE <i class="fa fa-chevron-right"></i>
-                </a>
               
             </div>
           </div>
@@ -552,7 +529,7 @@ public class CopyFiles {
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#查找一个目录下所有子路径和子文件："><span class="nav-number">1.</span> <span class="nav-text">查找一个目录下所有子路径和子文件：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#批量复制文件："><span class="nav-number">2.</span> <span class="nav-text">批量复制文件：</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Person-java"><span class="nav-number">1.</span> <span class="nav-text">Person.java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySpring-java"><span class="nav-number">2.</span> <span class="nav-text">MySpring.java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TestMain-java"><span class="nav-number">3.</span> <span class="nav-text">TestMain.java</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
