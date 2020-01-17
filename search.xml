@@ -1,6 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>通过注解实现依赖注入</title>
+    <url>/blog14.html</url>
+    <content><![CDATA[<p>通过注解实现依赖注入</p>
+<a id="more"></a>
+<h3 id="Person-java"><a href="#Person-java" class="headerlink" title="Person.java"></a>Person.java</h3><pre><code>public class Person {
+
+    private String name;
+    private Integer age;
+    private String sex;
+
+    @MyAnnotation({&quot;华文暄&quot;, &quot;18&quot;, &quot;男&quot;})
+    public Person(){}
+
+    public void setName(String name){
+        this.name = name;
+    }
+    public void setAge(Integer age){
+        this.age = age;
+    }
+    public void setSex(String sex){
+        this.sex = sex;
+    }
+
+    public String toString(){
+        return &quot;{&quot;+this.name+&quot;,&quot;+this.age+&quot;,&quot;+this.sex+&quot;}&quot;;
+    }
+
+}</code></pre><h3 id="MySpring-java"><a href="#MySpring-java" class="headerlink" title="MySpring.java"></a>MySpring.java</h3><pre><code>/*
+    目的：IOC控制反转思想实现对象托管，利用自定义注解实现依赖注入
+    步骤：
+        获取类
+        获取构造方法
+        创建对象
+        获取注解对象
+        获取注解对象中的信息
+        获取该类所有属性
+        获取每个属性对应的set方法
+        通过注解对象中的信息和set方法实现依赖注入
+*/
+public class MySpring {
+
+    public Object getBean(String className) throws Exception{
+        Object object = null;
+
+        try{
+            Class clazz = Class.forName(className);
+
+            Constructor constructor = clazz.getConstructor();
+
+            object = constructor.newInstance();
+
+            Annotation annotation = constructor.getAnnotation(MyAnnotation.class);
+
+            Class aClass = annotation.getClass();
+            Method aMethod = aClass.getMethod(&quot;value&quot;);
+            String[] values = (String[])aMethod.invoke(annotation);
+
+            Field[] fields = clazz.getDeclaredFields();
+
+            for(int i = 0; i &lt; fields.length; i++){
+                String fieldName = fields[i].getName();
+                String firstLetter = fieldName.substring(0, 1).toUpperCase();
+                String otherLetters = fieldName.substring(1);
+                StringBuilder setMethod = new StringBuilder(&quot;set&quot;);
+                setMethod.append(firstLetter);
+                setMethod.append(otherLetters);
+
+                Class fieldType = fields[i].getType();
+                Constructor fieldConstructor = fieldType.getConstructor(String.class);
+
+                Method method = clazz.getMethod(setMethod.toString(), fieldType);
+                method.invoke(object, fieldConstructor.newInstance(values[i]));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return object;
+    }
+
+}</code></pre><h3 id="MyAnnotation"><a href="#MyAnnotation" class="headerlink" title="MyAnnotation"></a>MyAnnotation</h3><pre><code>//静态导入
+import static java.lang.annotation.ElementType.*;
+import java.lang.annotation.Retention;
+import static java.lang.annotation.RetentionPolicy.*;
+import java.lang.annotation.Target;
+
+@Target(CONSTRUCTOR)
+@Retention(RUNTIME)
+public @interface MyAnnotation {
+
+    String[] value();
+
+}</code></pre><h3 id="TestMain-java"><a href="#TestMain-java" class="headerlink" title="TestMain.java"></a>TestMain.java</h3><pre><code>public class TestMain {
+
+    public static void main(String[] args) throws Exception {
+        MySpring mySpring = new MySpring();
+
+        Person person = (Person)mySpring.getBean(&quot;javaSE.annotation.Person&quot;);
+
+        System.out.println(person);
+    }
+
+}</code></pre>]]></content>
+      <tags>
+        <tag>IOC/Spring/Reflection/Annotation</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>IOC控制反转和依赖注入</title>
     <url>/blog13.html</url>
     <content><![CDATA[<p>控制反转和依赖注入的混合应用</p>
@@ -1460,6 +1568,94 @@ password=13013005866</code></pre>]]></content>
       </tags>
   </entry>
   <entry>
+    <title>Application of Exception, Multithreading in Java SE</title>
+    <url>/blog02.html</url>
+    <content><![CDATA[<p>Application of Exception, Multithreading in Java SE</p>
+<a id="more"></a>
+<h3 id="双线程交替输出1，2，3，4…"><a href="#双线程交替输出1，2，3，4…" class="headerlink" title="双线程交替输出1，2，3，4…"></a>双线程交替输出1，2，3，4…</h3><h4 id="Number-java"><a href="#Number-java" class="headerlink" title="Number.java"></a>Number.java</h4><pre><code>public class Number {
+
+    int number;
+
+    public Number(int number) {
+        this.number = number;
+    }
+
+    public synchronized void printOdd() {
+        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t1执行
+        this.notifyAll();//把t2唤醒，此时t2没有对象锁，处于就绪状态
+        try {
+            Thread.sleep(1000);
+            this.wait();//1s后，将t1睡眠，t1归还对象锁，t2获取对象锁
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized void printEven() {
+        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t2执行
+        this.notifyAll();//把t1唤醒，此时t1没有对象锁，处于就绪状态
+        try {
+            Thread.sleep(1000);
+            this.wait();//1s后，将t2睡眠，t2归还对象锁，t1获取对象锁
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+}</code></pre><h4 id="PrintOdd-java"><a href="#PrintOdd-java" class="headerlink" title="PrintOdd.java"></a>PrintOdd.java</h4><pre><code>public class PrintOdd implements Runnable {
+
+    Number num;
+
+    public PrintOdd(Number num) {
+        this.num = num;
+    }
+
+    public void run() {
+        while(true) {
+            this.num.printOdd();
+        }
+    }
+
+}</code></pre><h4 id="PrintEven-java"><a href="#PrintEven-java" class="headerlink" title="PrintEven.java"></a>PrintEven.java</h4><pre><code>public class PrintEven implements Runnable{
+
+    Number num;
+
+    public PrintEven(Number num) {
+        this.num = num;
+    }
+
+    public void run() {
+        while(true) {
+            this.num.printEven();
+        }
+    }
+
+}</code></pre><h4 id="Test-java"><a href="#Test-java" class="headerlink" title="Test.java"></a>Test.java</h4><pre><code>public class Text {
+
+    public static void main(String[] args) throws Exception {
+
+        Number num = new Number(1);
+
+        Thread t1 = new Thread(new PrintOdd(num));//双线程共享同一数据
+        t1.setName(&quot;t1&quot;);
+
+        Thread t2 = new Thread(new PrintEven(num));
+        t2.setName(&quot;t2&quot;);
+
+        t1.start();//让t1先执行
+
+        Thread.sleep(1000);
+
+        t2.start();
+
+    }
+
+}</code></pre>]]></content>
+      <tags>
+        <tag>Exception/Thread</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Application of Exception, IO and recursion in Java SE</title>
     <url>/blog01.html</url>
     <content><![CDATA[<p>Application of Exception, IO and recursion in Java SE</p>
@@ -1555,94 +1751,6 @@ public class CopyFiles {
 }</code></pre>]]></content>
       <tags>
         <tag>IO/Exception/recursion</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Application of Exception, Multithreading in Java SE</title>
-    <url>/blog02.html</url>
-    <content><![CDATA[<p>Application of Exception, Multithreading in Java SE</p>
-<a id="more"></a>
-<h3 id="双线程交替输出1，2，3，4…"><a href="#双线程交替输出1，2，3，4…" class="headerlink" title="双线程交替输出1，2，3，4…"></a>双线程交替输出1，2，3，4…</h3><h4 id="Number-java"><a href="#Number-java" class="headerlink" title="Number.java"></a>Number.java</h4><pre><code>public class Number {
-
-    int number;
-
-    public Number(int number) {
-        this.number = number;
-    }
-
-    public synchronized void printOdd() {
-        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t1执行
-        this.notifyAll();//把t2唤醒，此时t2没有对象锁，处于就绪状态
-        try {
-            Thread.sleep(1000);
-            this.wait();//1s后，将t1睡眠，t1归还对象锁，t2获取对象锁
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public synchronized void printEven() {
-        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t2执行
-        this.notifyAll();//把t1唤醒，此时t1没有对象锁，处于就绪状态
-        try {
-            Thread.sleep(1000);
-            this.wait();//1s后，将t2睡眠，t2归还对象锁，t1获取对象锁
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-}</code></pre><h4 id="PrintOdd-java"><a href="#PrintOdd-java" class="headerlink" title="PrintOdd.java"></a>PrintOdd.java</h4><pre><code>public class PrintOdd implements Runnable {
-
-    Number num;
-
-    public PrintOdd(Number num) {
-        this.num = num;
-    }
-
-    public void run() {
-        while(true) {
-            this.num.printOdd();
-        }
-    }
-
-}</code></pre><h4 id="PrintEven-java"><a href="#PrintEven-java" class="headerlink" title="PrintEven.java"></a>PrintEven.java</h4><pre><code>public class PrintEven implements Runnable{
-
-    Number num;
-
-    public PrintEven(Number num) {
-        this.num = num;
-    }
-
-    public void run() {
-        while(true) {
-            this.num.printEven();
-        }
-    }
-
-}</code></pre><h4 id="Test-java"><a href="#Test-java" class="headerlink" title="Test.java"></a>Test.java</h4><pre><code>public class Text {
-
-    public static void main(String[] args) throws Exception {
-
-        Number num = new Number(1);
-
-        Thread t1 = new Thread(new PrintOdd(num));//双线程共享同一数据
-        t1.setName(&quot;t1&quot;);
-
-        Thread t2 = new Thread(new PrintEven(num));
-        t2.setName(&quot;t2&quot;);
-
-        t1.start();//让t1先执行
-
-        Thread.sleep(1000);
-
-        t2.start();
-
-    }
-
-}</code></pre>]]></content>
-      <tags>
-        <tag>Exception/Thread</tag>
       </tags>
   </entry>
 </search>
