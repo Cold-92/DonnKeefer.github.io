@@ -1381,6 +1381,104 @@ public class ShoppingCart {
       </tags>
   </entry>
   <entry>
+    <title>Application of Exception, IO and recursion in Java SE</title>
+    <url>/blog01.html</url>
+    <content><![CDATA[<p>Application of Exception, IO and recursion in Java SE</p>
+<a id="more"></a>
+<h3 id="查找一个目录下所有子路径和子文件："><a href="#查找一个目录下所有子路径和子文件：" class="headerlink" title="查找一个目录下所有子路径和子文件："></a>查找一个目录下所有子路径和子文件：</h3><pre><code>import java.io.*;
+
+public class SeekFiles {
+
+    public static void main(String[] args) {
+
+        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
+        SeekFiles.seekFiles(file);
+
+    }
+
+    public static void seekFiles(File file) {
+
+        if(file.isFile()) {
+            return ;
+        }
+
+        File[] files = file.listFiles();
+        for(File subFile : files) {
+            System.out.println(subFile.getAbsolutePath());
+            seekFiles(subFile);
+        }
+
+    }
+
+}</code></pre><h3 id="批量复制文件："><a href="#批量复制文件：" class="headerlink" title="批量复制文件："></a>批量复制文件：</h3><pre><code>import java.io.*;
+
+public class CopyFiles {
+
+    public static void main(String[] args) {
+
+        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
+        CopyFiles.copyFile(file);
+
+    }
+
+    public static void copyFile(File file) {
+
+        if(file.isFile()) {//判断是否为文件，不是就是路径
+            String filePath = file.getAbsolutePath();
+            String newFilePath = &quot;C&quot;+filePath.substring(1);
+            File parentFile = new File(newFilePath).getParentFile();
+            if(!parentFile.exists()) {//判断父路径是否存在
+                parentFile.mkdirs();
+            }
+
+            FileInputStream fis = null;
+            FileOutputStream fos = null;
+
+            try {
+                fis = new FileInputStream(filePath);
+                fos = new FileOutputStream(newFilePath);
+
+                byte[] bytes = new byte[1024000];//每次拷贝100kb
+                int temp = 0;
+                while((temp=fis.read(bytes)) != -1){
+                    fos.write(bytes, 0, temp);
+                }
+
+                fos.flush();
+            }catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                if(fis != null) {
+                    try {
+                        fis.close();
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(fos != null) {
+                    try {
+                        fos.close();
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return ;
+        }
+
+        File[] files = file.listFiles();
+        for(File subFile : files) {
+            copyFile(subFile);
+        }
+
+    }
+
+}</code></pre>]]></content>
+      <tags>
+        <tag>IO/Exception/recursion</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JDBC process structure in Java SE</title>
     <url>/blog04.html</url>
     <content><![CDATA[<p>JDBC process structure in Java SE</p>
@@ -1653,104 +1751,6 @@ user=root
 password=13013005866</code></pre>]]></content>
       <tags>
         <tag>Reflaction/JDBC</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Application of Exception, IO and recursion in Java SE</title>
-    <url>/blog01.html</url>
-    <content><![CDATA[<p>Application of Exception, IO and recursion in Java SE</p>
-<a id="more"></a>
-<h3 id="查找一个目录下所有子路径和子文件："><a href="#查找一个目录下所有子路径和子文件：" class="headerlink" title="查找一个目录下所有子路径和子文件："></a>查找一个目录下所有子路径和子文件：</h3><pre><code>import java.io.*;
-
-public class SeekFiles {
-
-    public static void main(String[] args) {
-
-        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
-        SeekFiles.seekFiles(file);
-
-    }
-
-    public static void seekFiles(File file) {
-
-        if(file.isFile()) {
-            return ;
-        }
-
-        File[] files = file.listFiles();
-        for(File subFile : files) {
-            System.out.println(subFile.getAbsolutePath());
-            seekFiles(subFile);
-        }
-
-    }
-
-}</code></pre><h3 id="批量复制文件："><a href="#批量复制文件：" class="headerlink" title="批量复制文件："></a>批量复制文件：</h3><pre><code>import java.io.*;
-
-public class CopyFiles {
-
-    public static void main(String[] args) {
-
-        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
-        CopyFiles.copyFile(file);
-
-    }
-
-    public static void copyFile(File file) {
-
-        if(file.isFile()) {//判断是否为文件，不是就是路径
-            String filePath = file.getAbsolutePath();
-            String newFilePath = &quot;C&quot;+filePath.substring(1);
-            File parentFile = new File(newFilePath).getParentFile();
-            if(!parentFile.exists()) {//判断父路径是否存在
-                parentFile.mkdirs();
-            }
-
-            FileInputStream fis = null;
-            FileOutputStream fos = null;
-
-            try {
-                fis = new FileInputStream(filePath);
-                fos = new FileOutputStream(newFilePath);
-
-                byte[] bytes = new byte[1024000];//每次拷贝100kb
-                int temp = 0;
-                while((temp=fis.read(bytes)) != -1){
-                    fos.write(bytes, 0, temp);
-                }
-
-                fos.flush();
-            }catch (Exception e) {
-                e.printStackTrace();
-            }finally {
-                if(fis != null) {
-                    try {
-                        fis.close();
-                    }catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(fos != null) {
-                    try {
-                        fos.close();
-                    }catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            return ;
-        }
-
-        File[] files = file.listFiles();
-        for(File subFile : files) {
-            copyFile(subFile);
-        }
-
-    }
-
-}</code></pre>]]></content>
-      <tags>
-        <tag>IO/Exception/recursion</tag>
       </tags>
   </entry>
 </search>
