@@ -1293,6 +1293,192 @@ public class ShoppingCart {
       </tags>
   </entry>
   <entry>
+    <title>Application of Exception, IO and recursion in Java SE</title>
+    <url>/blog01.html</url>
+    <content><![CDATA[<p>Application of Exception, IO and recursion in Java SE</p>
+<a id="more"></a>
+<h3 id="查找一个目录下所有子路径和子文件："><a href="#查找一个目录下所有子路径和子文件：" class="headerlink" title="查找一个目录下所有子路径和子文件："></a>查找一个目录下所有子路径和子文件：</h3><pre><code>import java.io.*;
+
+public class SeekFiles {
+
+    public static void main(String[] args) {
+
+        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
+        SeekFiles.seekFiles(file);
+
+    }
+
+    public static void seekFiles(File file) {
+
+        if(file.isFile()) {
+            return ;
+        }
+
+        File[] files = file.listFiles();
+        for(File subFile : files) {
+            System.out.println(subFile.getAbsolutePath());
+            seekFiles(subFile);
+        }
+
+    }
+
+}</code></pre><h3 id="批量复制文件："><a href="#批量复制文件：" class="headerlink" title="批量复制文件："></a>批量复制文件：</h3><pre><code>import java.io.*;
+
+public class CopyFiles {
+
+    public static void main(String[] args) {
+
+        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
+        CopyFiles.copyFile(file);
+
+    }
+
+    public static void copyFile(File file) {
+
+        if(file.isFile()) {//判断是否为文件，不是就是路径
+            String filePath = file.getAbsolutePath();
+            String newFilePath = &quot;C&quot;+filePath.substring(1);
+            File parentFile = new File(newFilePath).getParentFile();
+            if(!parentFile.exists()) {//判断父路径是否存在
+                parentFile.mkdirs();
+            }
+
+            FileInputStream fis = null;
+            FileOutputStream fos = null;
+
+            try {
+                fis = new FileInputStream(filePath);
+                fos = new FileOutputStream(newFilePath);
+
+                byte[] bytes = new byte[1024000];//每次拷贝100kb
+                int temp = 0;
+                while((temp=fis.read(bytes)) != -1){
+                    fos.write(bytes, 0, temp);
+                }
+
+                fos.flush();
+            }catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                if(fis != null) {
+                    try {
+                        fis.close();
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(fos != null) {
+                    try {
+                        fos.close();
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return ;
+        }
+
+        File[] files = file.listFiles();
+        for(File subFile : files) {
+            copyFile(subFile);
+        }
+
+    }
+
+}</code></pre>]]></content>
+      <tags>
+        <tag>IO/Exception/recursion</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Application of Exception, Multithreading in Java SE</title>
+    <url>/blog02.html</url>
+    <content><![CDATA[<p>Application of Exception, Multithreading in Java SE</p>
+<a id="more"></a>
+<h3 id="双线程交替输出1，2，3，4…"><a href="#双线程交替输出1，2，3，4…" class="headerlink" title="双线程交替输出1，2，3，4…"></a>双线程交替输出1，2，3，4…</h3><h4 id="Number-java"><a href="#Number-java" class="headerlink" title="Number.java"></a>Number.java</h4><pre><code>public class Number {
+
+    int number;
+
+    public Number(int number) {
+        this.number = number;
+    }
+
+    public synchronized void printOdd() {
+        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t1执行
+        this.notifyAll();//把t2唤醒，此时t2没有对象锁，处于就绪状态
+        try {
+            Thread.sleep(1000);
+            this.wait();//1s后，将t1睡眠，t1归还对象锁，t2获取对象锁
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized void printEven() {
+        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t2执行
+        this.notifyAll();//把t1唤醒，此时t1没有对象锁，处于就绪状态
+        try {
+            Thread.sleep(1000);
+            this.wait();//1s后，将t2睡眠，t2归还对象锁，t1获取对象锁
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+}</code></pre><h4 id="PrintOdd-java"><a href="#PrintOdd-java" class="headerlink" title="PrintOdd.java"></a>PrintOdd.java</h4><pre><code>public class PrintOdd implements Runnable {
+
+    Number num;
+
+    public PrintOdd(Number num) {
+        this.num = num;
+    }
+
+    public void run() {
+        while(true) {
+            this.num.printOdd();
+        }
+    }
+
+}</code></pre><h4 id="PrintEven-java"><a href="#PrintEven-java" class="headerlink" title="PrintEven.java"></a>PrintEven.java</h4><pre><code>public class PrintEven implements Runnable{
+
+    Number num;
+
+    public PrintEven(Number num) {
+        this.num = num;
+    }
+
+    public void run() {
+        while(true) {
+            this.num.printEven();
+        }
+    }
+
+}</code></pre><h4 id="Test-java"><a href="#Test-java" class="headerlink" title="Test.java"></a>Test.java</h4><pre><code>public class Text {
+
+    public static void main(String[] args) throws Exception {
+
+        Number num = new Number(1);
+
+        Thread t1 = new Thread(new PrintOdd(num));//双线程共享同一数据
+        t1.setName(&quot;t1&quot;);
+
+        Thread t2 = new Thread(new PrintEven(num));
+        t2.setName(&quot;t2&quot;);
+
+        t1.start();//让t1先执行
+
+        Thread.sleep(1000);
+
+        t2.start();
+
+    }
+
+}</code></pre>]]></content>
+      <tags>
+        <tag>Exception/Thread</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JDBC process structure in Java SE</title>
     <url>/blog04.html</url>
     <content><![CDATA[<p>JDBC process structure in Java SE</p>
@@ -1565,192 +1751,6 @@ user=root
 password=13013005866</code></pre>]]></content>
       <tags>
         <tag>Reflaction/JDBC</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Application of Exception, IO and recursion in Java SE</title>
-    <url>/blog01.html</url>
-    <content><![CDATA[<p>Application of Exception, IO and recursion in Java SE</p>
-<a id="more"></a>
-<h3 id="查找一个目录下所有子路径和子文件："><a href="#查找一个目录下所有子路径和子文件：" class="headerlink" title="查找一个目录下所有子路径和子文件："></a>查找一个目录下所有子路径和子文件：</h3><pre><code>import java.io.*;
-
-public class SeekFiles {
-
-    public static void main(String[] args) {
-
-        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
-        SeekFiles.seekFiles(file);
-
-    }
-
-    public static void seekFiles(File file) {
-
-        if(file.isFile()) {
-            return ;
-        }
-
-        File[] files = file.listFiles();
-        for(File subFile : files) {
-            System.out.println(subFile.getAbsolutePath());
-            seekFiles(subFile);
-        }
-
-    }
-
-}</code></pre><h3 id="批量复制文件："><a href="#批量复制文件：" class="headerlink" title="批量复制文件："></a>批量复制文件：</h3><pre><code>import java.io.*;
-
-public class CopyFiles {
-
-    public static void main(String[] args) {
-
-        File file = new File(&quot;D:\\JAVA Code Base\\Java Exercises\\src&quot;);
-        CopyFiles.copyFile(file);
-
-    }
-
-    public static void copyFile(File file) {
-
-        if(file.isFile()) {//判断是否为文件，不是就是路径
-            String filePath = file.getAbsolutePath();
-            String newFilePath = &quot;C&quot;+filePath.substring(1);
-            File parentFile = new File(newFilePath).getParentFile();
-            if(!parentFile.exists()) {//判断父路径是否存在
-                parentFile.mkdirs();
-            }
-
-            FileInputStream fis = null;
-            FileOutputStream fos = null;
-
-            try {
-                fis = new FileInputStream(filePath);
-                fos = new FileOutputStream(newFilePath);
-
-                byte[] bytes = new byte[1024000];//每次拷贝100kb
-                int temp = 0;
-                while((temp=fis.read(bytes)) != -1){
-                    fos.write(bytes, 0, temp);
-                }
-
-                fos.flush();
-            }catch (Exception e) {
-                e.printStackTrace();
-            }finally {
-                if(fis != null) {
-                    try {
-                        fis.close();
-                    }catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(fos != null) {
-                    try {
-                        fos.close();
-                    }catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            return ;
-        }
-
-        File[] files = file.listFiles();
-        for(File subFile : files) {
-            copyFile(subFile);
-        }
-
-    }
-
-}</code></pre>]]></content>
-      <tags>
-        <tag>IO/Exception/recursion</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Application of Exception, Multithreading in Java SE</title>
-    <url>/blog02.html</url>
-    <content><![CDATA[<p>Application of Exception, Multithreading in Java SE</p>
-<a id="more"></a>
-<h3 id="双线程交替输出1，2，3，4…"><a href="#双线程交替输出1，2，3，4…" class="headerlink" title="双线程交替输出1，2，3，4…"></a>双线程交替输出1，2，3，4…</h3><h4 id="Number-java"><a href="#Number-java" class="headerlink" title="Number.java"></a>Number.java</h4><pre><code>public class Number {
-
-    int number;
-
-    public Number(int number) {
-        this.number = number;
-    }
-
-    public synchronized void printOdd() {
-        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t1执行
-        this.notifyAll();//把t2唤醒，此时t2没有对象锁，处于就绪状态
-        try {
-            Thread.sleep(1000);
-            this.wait();//1s后，将t1睡眠，t1归还对象锁，t2获取对象锁
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public synchronized void printEven() {
-        System.out.println(Thread.currentThread().getName() + &quot;----&gt;&quot; + this.number++);//t2执行
-        this.notifyAll();//把t1唤醒，此时t1没有对象锁，处于就绪状态
-        try {
-            Thread.sleep(1000);
-            this.wait();//1s后，将t2睡眠，t2归还对象锁，t1获取对象锁
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-}</code></pre><h4 id="PrintOdd-java"><a href="#PrintOdd-java" class="headerlink" title="PrintOdd.java"></a>PrintOdd.java</h4><pre><code>public class PrintOdd implements Runnable {
-
-    Number num;
-
-    public PrintOdd(Number num) {
-        this.num = num;
-    }
-
-    public void run() {
-        while(true) {
-            this.num.printOdd();
-        }
-    }
-
-}</code></pre><h4 id="PrintEven-java"><a href="#PrintEven-java" class="headerlink" title="PrintEven.java"></a>PrintEven.java</h4><pre><code>public class PrintEven implements Runnable{
-
-    Number num;
-
-    public PrintEven(Number num) {
-        this.num = num;
-    }
-
-    public void run() {
-        while(true) {
-            this.num.printEven();
-        }
-    }
-
-}</code></pre><h4 id="Test-java"><a href="#Test-java" class="headerlink" title="Test.java"></a>Test.java</h4><pre><code>public class Text {
-
-    public static void main(String[] args) throws Exception {
-
-        Number num = new Number(1);
-
-        Thread t1 = new Thread(new PrintOdd(num));//双线程共享同一数据
-        t1.setName(&quot;t1&quot;);
-
-        Thread t2 = new Thread(new PrintEven(num));
-        t2.setName(&quot;t2&quot;);
-
-        t1.start();//让t1先执行
-
-        Thread.sleep(1000);
-
-        t2.start();
-
-    }
-
-}</code></pre>]]></content>
-      <tags>
-        <tag>Exception/Thread</tag>
       </tags>
   </entry>
 </search>
